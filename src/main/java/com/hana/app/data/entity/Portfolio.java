@@ -13,11 +13,11 @@ public class Portfolio extends BaseEntity {
     @Column(name = "portfolio_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(nullable = false, name = "total_value")
-    private Long totalValue;
+    private long totalValue;
 
 }
