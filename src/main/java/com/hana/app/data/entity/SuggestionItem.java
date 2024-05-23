@@ -8,22 +8,19 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class SuggestionItem extends BaseEntity {
-    //    index 추가
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, columnDefinition = "LONG", name = "suggestion_item_id")
+    @Column(nullable = false, name = "suggestion_item_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "suggestion_id")
-//    @Column(nullable = false, columnDefinition = "LONG", name = "suggestion_id")
+    @JoinColumn(name = "suggestion_id", nullable = false)
     private Suggestion suggestion;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fund_id")
-//    @Column(nullable = false, columnDefinition = "LONG", name = "fund_id")
+    @JoinColumn(name = "fund_id", nullable = false)
     private Fund fund;
 
-    @Column(nullable = false, columnDefinition = "LONG", name = "fund_value")
+    @Column(nullable = false, name = "fund_value")
     private Long fundValue;
 }

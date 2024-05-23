@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Consult extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "consult_id", nullable = false)
     private Long id;
 
@@ -31,6 +31,6 @@ public class Consult extends BaseEntity{
     @Column(name = "started_at")
     private LocalDateTime startedAt;
 
-    @Column(name = "record", length = 100)
+    @Column(name = "record")
     private String record;
 }

@@ -10,10 +10,14 @@ import lombok.*;
 public class Portfolio extends BaseEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "portfolio_id", columnDefinition = "LONG")
+    @Column(name = "portfolio_id")
     private Long id;
 
-    @Column(nullable = false, columnDefinition = "LONG", name = "total_value")
-    private long totalValue;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(nullable = false, name = "total_value")
+    private Long totalValue;
 
 }

@@ -12,9 +12,11 @@ public class Fund extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="fund_id", nullable = false)
     private Long id;
-    @OneToOne
-    @JoinColumn(name="risktype_id")
-    private Risktype risktype;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "risk_type")
+    private RiskType riskType;
+
     @Column(name="fund_name", nullable = false)
     private String name;
 }

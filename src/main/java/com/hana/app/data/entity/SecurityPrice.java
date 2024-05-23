@@ -13,11 +13,14 @@ public class SecurityPrice extends BaseEntity {
     @Column(name = "security_price_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "security_id", nullable = false)
     private Security security;
+
     @Column(nullable = false, name="trade_date")
     private LocalDateTime tradeDate;
+
     @Column(nullable = false, name="trade_price")
-    private LocalDateTime tradePrice;
+    private Long tradePrice;
 }

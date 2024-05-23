@@ -11,13 +11,13 @@ public class Suggestion extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, columnDefinition = "LONG", name = "suggestion_id")
+    @Column(nullable = false, name = "suggestion_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="portfolio_id")
     private Portfolio portfolio;
 
-    @Column(nullable = false, length=100, name = "name")
+    @Column(nullable = false, name = "suggestion_name")
     private String name;
 }
