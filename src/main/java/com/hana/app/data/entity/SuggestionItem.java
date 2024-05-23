@@ -11,7 +11,7 @@ public class SuggestionItem extends BaseEntity {
     //    index 추가
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, columnDefinition = "LONG", name = "suggestion_item_id")
+    @Column(nullable = false, name = "suggestion_item_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,6 +24,6 @@ public class SuggestionItem extends BaseEntity {
 //    @Column(nullable = false, columnDefinition = "LONG", name = "fund_id")
     private Fund fund;
 
-    @Column(nullable = false, columnDefinition = "LONG", name = "fund_value")
+    @Column(nullable = false, name = "fund_value")
     private Long fundValue;
 }

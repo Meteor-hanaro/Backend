@@ -10,7 +10,7 @@ import lombok.*;
 public class PortfolioItem extends BaseEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "portfolio_item_id", columnDefinition = "LONG")
+    @Column(name = "portfolio_item_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,9 +21,9 @@ public class PortfolioItem extends BaseEntity {
     @JoinColumn(name = "fund_id")
     private Fund fund;
 
-    @Column(nullable = false, columnDefinition = "LONG", name = "start_amount")
+    @Column(nullable = false, name = "start_amount")
     private Long startAmount;
 
-    @Column(nullable = false, columnDefinition = "LONG", name = "evaluation_amount")
+    @Column(nullable = false, name = "evaluation_amount")
     private Long evaluationAmount;
 }
