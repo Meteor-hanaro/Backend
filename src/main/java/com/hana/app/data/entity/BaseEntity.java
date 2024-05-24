@@ -33,5 +33,4 @@ public class BaseEntity {
     public BaseEntity() {
         this.status = BaseState.ACTIVE;
     }
-
 }

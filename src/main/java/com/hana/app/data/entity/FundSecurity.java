@@ -13,7 +13,7 @@ public class FundSecurity extends BaseEntity {
     @Column(name = "fund_security_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+  
     @ManyToOne
     @JoinColumn(name = "fund_id", nullable = false)
     private Fund fund;
@@ -24,4 +24,5 @@ public class FundSecurity extends BaseEntity {
 
     @Column(nullable = false, name="fund_security_percentage")
     private Long fundSecurityPercentage;
+
 }
