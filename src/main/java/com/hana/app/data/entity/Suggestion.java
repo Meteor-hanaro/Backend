@@ -18,6 +18,6 @@ public class Suggestion extends BaseEntity {
     @JoinColumn(name="portfolio_id")
     private Portfolio portfolio;
 
-    @Column(nullable = false, length=100, name = "name")
+    @Column(nullable = false, name = "suggestion_name")
     private String name;
 }

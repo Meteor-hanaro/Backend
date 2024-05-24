@@ -11,36 +11,39 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
+  
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "risktype_id")
-    private Risktype risktype;
-
-    @Column(name = "email", length = 20)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "pw", length = 20)
-    private String pw;
+    @Column(name = "password", nullable = false)
+    private String password;
 
-    @Column(name = "birthDate")
+    @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     private Integer gender; // 0: 남자, 1: 여자
 
-    @Column(name = "name", length = 20)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "phone", length = 20)
+    @Column(name = "phone", nullable = false)
     private String phone;
 
     @Column(name = "tested_at")
     private LocalDateTime testedAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "risk_type")
+    private RiskType riskType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pb_id", nullable = false)
+    private Pb pb;
 
 }

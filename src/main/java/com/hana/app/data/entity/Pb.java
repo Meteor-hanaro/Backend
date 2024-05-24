@@ -5,8 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "pb")
 @Getter
@@ -14,26 +12,26 @@ import java.time.LocalDate;
 public class Pb extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pb_id", nullable = false)
     private Long id;
 
-    @Column(name = "email", length = 50)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "pw", length = 20)
-    private String pw;
+    @Column(name = "password", nullable = false)
+    private String password;
 
-    @Column(name = "name", length = 50)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "phone", length = 50)
+    @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "profile_image", length = 100)
+    @Column(name = "profile_image", nullable = false)
     private String profileImage;
 
-    @Column(name = "introduce", length = 100)
+    @Column(name = "profile_introduce", nullable = false)
     private String profileIntroduce;
 
 }

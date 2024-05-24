@@ -12,6 +12,7 @@ public class Security extends BaseEntity {
     @Column(name = "security_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, name="security_name")
     private String name;
 }
