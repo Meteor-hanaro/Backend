@@ -1,5 +1,6 @@
-package com.hana.app.data.entity;
+package com.hana.app.data.entity.fund;
 
+import com.hana.app.data.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,7 +8,7 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FundContract extends BaseEntity  {
+public class FundContract extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

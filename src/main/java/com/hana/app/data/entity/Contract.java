@@ -2,6 +2,7 @@ package com.hana.app.data.entity;
 
 import java.time.LocalDateTime;
 
+import com.hana.app.data.entity.fund.Fund;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

@@ -1,5 +1,7 @@
-package com.hana.app.data.entity;
+package com.hana.app.data.entity.suggestion;
 
+import com.hana.app.data.entity.BaseEntity;
+import com.hana.app.data.entity.portfolio.Portfolio;
 import jakarta.persistence.*;
 import lombok.*;
 
