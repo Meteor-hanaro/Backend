@@ -1,5 +1,7 @@
-package com.hana.app.data.entity;
+package com.hana.app.data.entity.fund;
 
+import com.hana.app.data.entity.BaseEntity;
+import com.hana.app.data.entity.RiskType;
 import jakarta.persistence.*;
 import lombok.*;
 
