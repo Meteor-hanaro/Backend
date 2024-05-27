@@ -1,4 +1,4 @@
-package com.hana.app.service;
+package com.hana.app.service.fund;
 
 import com.hana.app.data.entity.fund.Fund;
 import com.hana.app.frame.BaseService;
