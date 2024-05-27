@@ -10,7 +10,7 @@ public interface BaseService<K, V> {
     public V insert(V v);
 
     @Transactional
-    public Boolean delete(K k);
+    public void delete(K k);
 
     @Transactional
     public V update(V v);
