@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @SpringBootTest
-public class SelectTests {
+public class SelectFundTests {
 
     @Autowired
     FundService fundService;
