@@ -25,3 +25,15 @@ spring:
 config:
   url:
     fe: ENC(W4HaYgATG1KYJ+rTsr1J9jjwg6Non+Tgx/d7cKSzTSQ=)
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ENC(ajVyeumJjqDNWZeLKrw8vz/Gjupnb7Xmfs2c8ApgkDo=)
+      secretKey: ENC(4NtM/RNyIv/ss9uRHJtrlwMPNT5MXcuDBZkXqTXIAnBqE2TZhqhNkcr04rxmTrZhOdGraDG3oDE=)
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: hanaro-meteor
+    stack:
+      auto: false
