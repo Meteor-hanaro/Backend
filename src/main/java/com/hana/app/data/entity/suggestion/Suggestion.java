@@ -1,5 +1,7 @@
 package com.hana.app.data.entity.suggestion;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hana.app.data.entity.BaseEntity;
 import com.hana.app.data.entity.portfolio.Portfolio;
 import jakarta.persistence.*;
@@ -9,6 +11,7 @@ import lombok.*;
 @Table(name="suggestion")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Suggestion extends BaseEntity {
 
     @Id
