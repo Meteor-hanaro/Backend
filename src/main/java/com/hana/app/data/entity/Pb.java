@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "pb")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Pb extends BaseEntity {
 
     @Id

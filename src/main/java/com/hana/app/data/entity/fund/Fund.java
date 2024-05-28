@@ -11,7 +11,6 @@ import lombok.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Fund extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

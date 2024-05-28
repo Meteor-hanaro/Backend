@@ -19,13 +19,21 @@ public class FundContract extends BaseEntity {
     @JoinColumn(name="fund_id")
     private Fund fund;
 
-    @Column(name="content", nullable = false, length=3000)
-    private String content;
+    @Column(name="title", nullable = false)
+    private String title;
+
+    @Column(name="description", nullable = false, length=3000)
+    private String description;
+
+    @Column(name = "pdf_url")
+    private String pdfUrl;
 
     @Column(name="contract_type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private ContractType contractType;
 
     public enum ContractType {
-        JOIN, CANCEL
+        JOIN, FINAL
     };
+
 }

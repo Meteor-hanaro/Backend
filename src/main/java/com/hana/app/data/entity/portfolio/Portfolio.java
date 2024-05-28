@@ -10,7 +10,6 @@ import lombok.*;
 @Table(name="portfolio")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Portfolio extends BaseEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

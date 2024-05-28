@@ -11,7 +11,6 @@ import lombok.*;
 @Table(name="suggestion")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Suggestion extends BaseEntity {
 
     @Id
