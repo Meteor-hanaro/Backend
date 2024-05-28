@@ -41,4 +41,8 @@ public class FundSecurityService implements BaseService<Long, FundSecurity> {
     public List<FundSecurity> getAll() {
         return fundSecurityRepository.findAll();
     }
+
+    public List<FundSecurity> getByFundId(Long aLong) {
+        return fundSecurityRepository.findFundSecuritiesByFund_IdOrderByFundSecurityPercentageDesc(aLong);
+    }
 }

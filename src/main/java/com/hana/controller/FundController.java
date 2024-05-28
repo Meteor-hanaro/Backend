@@ -1,5 +1,7 @@
 package com.hana.controller;
 
+import com.hana.app.data.entity.fund.Fund;
+import com.hana.app.data.entity.fund.FundSecurity;
 import com.hana.app.service.fund.FundSecurityService;
 import com.hana.app.service.fund.FundService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/fund")
@@ -22,8 +27,12 @@ public class FundController {
 
     @RequestMapping("/securities/get")
     public Object getFundSecurities(@RequestParam("id") Long id) {
-        Long relatedFundId = fundService.get(id).get().getId();
-        return fundSecurityService.get(relatedFundId);
+//        Input: Fund id
+//        Output: Fund securities
+
+        Optional<Fund> relatedFund = fundService.get(id);
+
+        return fundSecurityService.getByFundId(relatedFund.get().getId());
     }
 
 }
