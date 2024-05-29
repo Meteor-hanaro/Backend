@@ -5,7 +5,7 @@ import com.hana.response.ErrorType;
 public class NotFoundException extends MeteorException {
 
 	public NotFoundException() {
-		super(ErrorType.BAD_REQUEST);
+		super(ErrorType.NOT_FOUND);
 	}
 
 	public NotFoundException(ErrorType errorType) {

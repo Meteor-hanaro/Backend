@@ -1,5 +1,6 @@
 package com.hana.app.data.entity.suggestion;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hana.app.data.entity.BaseEntity;
 import com.hana.app.data.entity.fund.Fund;
 import jakarta.persistence.*;

@@ -1,5 +1,6 @@
 package com.hana.app.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,17 +17,9 @@ public class Pb extends BaseEntity {
     @Column(name = "pb_id", nullable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false)
-    private String email;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "phone", nullable = false)
-    private String phone;
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(name = "profile_image", nullable = false)
     private String profileImage;
