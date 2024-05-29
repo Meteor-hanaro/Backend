@@ -1,10 +1,16 @@
 package com.hana;
 
+
 import com.hana.util.OCRUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
+
+import com.hana.config.JasyptConfig;
+
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.Map;
 

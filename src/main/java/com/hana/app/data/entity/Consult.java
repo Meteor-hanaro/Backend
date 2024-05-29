@@ -18,8 +18,8 @@ public class Consult extends BaseEntity{
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
-    private User user;
+    @JoinColumn(name = "vip_id")
+    private VIP vip;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pb_id")
