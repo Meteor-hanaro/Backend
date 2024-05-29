@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hana.app.service.FundContractService;
 import com.hana.dto.response.FundContractDto;
 import com.hana.external.aws.S3Service;
-import com.hana.response.MeteorResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,19 +25,15 @@ public class ContractController {
 	private final FundContractService fundContractService;
 
 	@PostMapping("/upload")
-	public MeteorResponse.MeteorSuccessResponse<String> uploadPdf(@RequestParam("file") MultipartFile file) {
-		String fileUrl = s3Service.uploadPdf(file, "contract");
-		return MeteorResponse.success(fileUrl);
+	public String uploadPdf(@RequestParam("file") MultipartFile file) {
+		return s3Service.uploadPdf(file, "contract");
 	}
 
 	@GetMapping("/join/{fundId}")
-	public MeteorResponse.MeteorSuccessResponse<List<FundContractDto>> getContracts(
+	public List<FundContractDto> getContracts(
 		@PathVariable("fundId") final Long fundId)
 	{
-		List<FundContractDto> fundContractsByFundId = fundContractService.getFundJoinContractsByFundId(fundId);
-		return MeteorResponse.success(fundContractsByFundId);
+		return fundContractService.getFundJoinContractsByFundId(fundId);
 	}
-
-
 
 }
