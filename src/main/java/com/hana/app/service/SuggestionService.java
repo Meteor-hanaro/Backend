@@ -5,6 +5,9 @@ import com.hana.app.data.entity.suggestion.SuggestionItem;
 import com.hana.app.repository.portfolio.PortfolioRepository;
 import com.hana.app.repository.suggestion.SuggestionItemRepository;
 import com.hana.app.repository.suggestion.SuggestionRepository;
+import com.hana.exception.InternalServerException;
+import com.hana.exception.MeteorException;
+import com.hana.response.ErrorType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -29,8 +32,8 @@ public class SuggestionService {
         try {
             userPortfolioId = portfolioRepository.findByUserId(userId).getId();
         } catch (Exception e) {
-            log.error("Doesn't match user {}portfolio", userId);
-            throw new RuntimeException();
+//            log.error("Doesn't match user {}portfolio", userId);
+            throw new MeteorException(ErrorType.NOT_FOUND);
         }
 
         // suggestion_list
@@ -50,7 +53,7 @@ public class SuggestionService {
             }
         } catch (Exception e) {
             log.error("Doesn't match portfolio {} suggestion", userPortfolioId);
-            throw new RuntimeException();
+            throw new MeteorException(ErrorType.BAD_REQUEST);
         }
 
         List<List<SuggestionItem>> suggestionItemList = new ArrayList<>();
