@@ -10,8 +10,7 @@ import java.util.Map;
 
 @SpringBootTest
 @Slf4j
-class MeteorBackendApplicationTests {
-
+class OCRTests {
     String dir = "C:/project/imgs/";
     @Test
     void contextLoads() {
@@ -21,4 +20,5 @@ class MeteorBackendApplicationTests {
         Map<String,String> map = OCRUtil.getData(jsonObject);
         map.values().forEach(txt->{log.info(txt);});
     }
+
 }
