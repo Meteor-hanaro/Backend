@@ -1,12 +1,19 @@
 package com.hana.app.service;
 
 import com.hana.app.data.entity.portfolio.Portfolio;
+import com.hana.app.data.entity.portfolio.PortfolioItem;
 import com.hana.app.repository.portfolio.PortfolioItemRepository;
 import com.hana.app.repository.portfolio.PortfolioRepository;
+import com.hana.dto.response.PortfolioDto;
+import com.hana.dto.response.PortfolioItemDto;
+import com.hana.exception.MeteorException;
+import com.hana.exception.NotFoundException;
+import com.hana.response.ErrorType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -16,19 +23,27 @@ public class PortfolioService {
     final PortfolioRepository portfolioRepository;
     final PortfolioItemRepository portfolioItemRepository;
 
-    public JSONObject getPortfolioByUserId(Long userId) {
-        JSONObject jsonObject = new JSONObject();
-        Portfolio portfolio = null;
+    public PortfolioDto getPortfolioByUserId(Long userId) {
+        PortfolioDto portfolioDto = null;
 
         try {
-            portfolio = portfolioRepository.findByUserId(userId);
-            jsonObject.put("portfolio", portfolio);
-            jsonObject.put("portfolio_item", portfolioItemRepository.findAllByPortfolioId(portfolio.getId()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new RuntimeException();
+            Portfolio portfolio = portfolioRepository.findByUserId(userId);
+            List<PortfolioItemDto> portfolioItems = getPortfolioItems(portfolioItemRepository.findAllByPortfolioId(portfolio.getId()));
+            portfolioDto = PortfolioDto.from(portfolio, portfolioItems);
+        } catch (MeteorException e) {
+            throw new NotFoundException(ErrorType.NOT_FOUND);
         }
 
-        return jsonObject;
+        return portfolioDto;
+    }
+
+    private List<PortfolioItemDto> getPortfolioItems(List<PortfolioItem> portfolioItems) {
+        List<PortfolioItemDto> list = null;
+
+        for(PortfolioItem portfolioItem : portfolioItems) {
+            list.add(PortfolioItemDto.from(portfolioItem));
+        }
+
+        return list;
     }
 }

@@ -5,12 +5,14 @@ import com.hana.app.data.entity.suggestion.SuggestionItem;
 import com.hana.app.repository.portfolio.PortfolioRepository;
 import com.hana.app.repository.suggestion.SuggestionItemRepository;
 import com.hana.app.repository.suggestion.SuggestionRepository;
-import com.hana.exception.InternalServerException;
+import com.hana.dto.response.SuggestionDto;
+import com.hana.dto.response.SuggestionItemCompositionDto;
+import com.hana.dto.response.SuggestionItemDto;
 import com.hana.exception.MeteorException;
+import com.hana.exception.NotFoundException;
 import com.hana.response.ErrorType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,53 +26,60 @@ public class SuggestionService {
     final SuggestionItemRepository suggestionItemRepository;
     final PortfolioRepository portfolioRepository;
 
-    public JSONObject getSuggestionListByUserId(Long userId) {
+    public SuggestionDto getSuggestionListByUserId(Long userId) {
 
-        // suggestion_name_list -> userid - 포트폴리오조회 - arraylist 에 저장
-        Long userPortfolioId = 0L;
+        Long userPortfolioId = getPortfolioIdByUserId(userId);
+        List<Suggestion> suggestions = getSuggestionsByPortfolioId(userPortfolioId);
+
+        return getSuggestions(suggestions);
+    }
+
+    private Long getPortfolioIdByUserId(Long userId) {
+        Long id = 0L;
 
         try {
-            userPortfolioId = portfolioRepository.findByUserId(userId).getId();
-        } catch (Exception e) {
-//            log.error("Doesn't match user {}portfolio", userId);
-            throw new MeteorException(ErrorType.NOT_FOUND);
+            id = portfolioRepository.findByUserId(userId).getId();
+        } catch (MeteorException e) {
+            throw new NotFoundException(ErrorType.NOT_FOUND);
         }
 
-        // suggestion_list
-        List<Map<Object, Object>> suggestionNameList = new ArrayList<>();
-        List<Suggestion> suggestionList = new ArrayList<>();
-        Map<Object, Object> map = new HashMap<>();
-        JSONObject jsonObject = new JSONObject();
+        return id;
+    }
+
+    private List<Suggestion> getSuggestionsByPortfolioId(Long portfolioId) {
+        List<Suggestion> suggestions = null;
 
         try {
-            suggestionList = suggestionRepository.findAllByPortfolioId(userPortfolioId);
+            suggestions = suggestionRepository.findAllByPortfolioId(portfolioId);
+        } catch (MeteorException e) {
+            throw new NotFoundException(ErrorType.NOT_FOUND);
+        }
 
-            for (Suggestion suggestion : suggestionList) {
-                Map<Object, Object> nameMap = new HashMap<>();
-                nameMap.put("suggestion_id", suggestion.getId());
-                nameMap.put("suggestion_name", suggestion.getName());
-                suggestionNameList.add(nameMap);
+        return suggestions;
+    }
+
+    private SuggestionDto getSuggestions(List<Suggestion> suggestions) {
+        List<SuggestionItemDto> suggestionItemDtos = new ArrayList<>();
+
+        for (Suggestion suggestion : suggestions) {
+
+            List<SuggestionItem> suggestionItems = null;
+            List<SuggestionItemCompositionDto> suggestionItemCompositionDtoList = new ArrayList<>();
+
+            try {
+                suggestionItems = suggestionItemRepository.findAllBySuggestion(suggestion);
+
+                for (SuggestionItem si : suggestionItems) {
+                    suggestionItemCompositionDtoList.add(SuggestionItemCompositionDto.from(si));
+                }
+
+                suggestionItemDtos.add(SuggestionItemDto.from(suggestion,suggestionItemCompositionDtoList));
+            } catch (MeteorException e) {
+                throw new NotFoundException(ErrorType.NOT_FOUND);
             }
-        } catch (Exception e) {
-            log.error("Doesn't match portfolio {} suggestion", userPortfolioId);
-            throw new MeteorException(ErrorType.BAD_REQUEST);
+
         }
 
-        List<List<SuggestionItem>> suggestionItemList = new ArrayList<>();
-
-        try {
-            for (Suggestion suggestion : suggestionList) {
-                suggestionItemList.add(suggestionItemRepository.findAllBySuggestion(suggestion));
-            }
-
-            jsonObject.put("suggestion_name_list", suggestionNameList);
-            jsonObject.put("suggestion_list", suggestionItemList);
-
-        } catch (Exception e) {
-            log.error("Error during matching suggestion - suggestionItem");
-            throw new RuntimeException();
-        }
-
-        return jsonObject;
+        return new SuggestionDto(suggestions.getFirst(), suggestionItemDtos);
     }
 }

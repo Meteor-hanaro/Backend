@@ -1,10 +1,11 @@
 package com.hana.controller;
 
 import com.hana.app.service.PortfolioService;
+import com.hana.dto.response.PortfolioDto;
+import com.hana.exception.MeteorException;
+import com.hana.exception.NotFoundException;
+import com.hana.response.ErrorType;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,16 +18,15 @@ public class PortfolioController {
     final PortfolioService portfolioService;
 
     @RequestMapping("/extract")
-    public ResponseEntity<Object> getPortfolio(@RequestParam("userId") Long userId) {
-        JSONObject jsonObject = null;
+    public PortfolioDto getPortfolio(@RequestParam("userId") Long userId) {
+        PortfolioDto portfolioDto = null;
 
         try {
-            jsonObject = portfolioService.getPortfolioByUserId(userId);
-        } catch (Exception e) {
-            e.printStackTrace();
+            portfolioDto = portfolioService.getPortfolioByUserId(userId);
+        } catch (MeteorException e) {
+            throw new NotFoundException(ErrorType.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(jsonObject, HttpStatus.OK);
-
+        return portfolioDto;
     }
 }

@@ -2,11 +2,7 @@ package com.hana.controller;
 
 import com.hana.app.service.SuggestionService;
 import com.hana.dto.response.SuggestionDto;
-import com.hana.response.MeteorResponse;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,16 +18,16 @@ public class SuggestionController {
     // pb가 제시한 수정안을 고객에게 보여주기 위해 데이터 추출
     // /api/suggestion/extract/{고객ID}
     @RequestMapping("/extract")
-    public MeteorResponse.MeteorSuccessResponse<JSONObject> extractSuggestions(@RequestParam("userId") Long userId) {
-        JSONObject jsonObject = null;
+    public SuggestionDto extractSuggestions(@RequestParam("userId") Long userId) {
+        SuggestionDto suggestionDto = null;
 
         try {
             // 제시안 ID로 포트폴리오 정보 만들어서 가져온 다음 front 로 전송
-            jsonObject = suggestionService.getSuggestionListByUserId(userId);
+            suggestionDto = suggestionService.getSuggestionListByUserId(userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return MeteorResponse.success(jsonObject);
+        return suggestionDto;
     }
 }
