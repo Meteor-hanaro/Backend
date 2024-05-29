@@ -18,10 +18,6 @@ public class Pb extends BaseEntity {
     @Column(name = "pb_id", nullable = false)
     private Long id;
 
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private List<User> user;
-
     @Column(name = "profile_image", nullable = false)
     private String profileImage;
 
