@@ -33,6 +33,7 @@ public class PortfolioItemService implements BaseService<Long, PortfolioItem> {
 
     @Override
     public Optional<PortfolioItem> get(Long aLong) {
+        // 하나만 가져오는 기능은 활용되지 않을 것으로 보임
         return portfolioItemRepository.findById(aLong);
     }
 
