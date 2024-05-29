@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "vip")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VIP extends User {
