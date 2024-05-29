@@ -2,6 +2,7 @@ package com.hana.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/contract")
 @RequiredArgsConstructor
+@Tag(name = "Contract", description = "Response Contract API")
 public class ContractController {
 
 	private final S3Service s3Service;

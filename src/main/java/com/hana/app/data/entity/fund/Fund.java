@@ -1,5 +1,7 @@
 package com.hana.app.data.entity.fund;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hana.app.data.entity.BaseEntity;
 import com.hana.app.data.entity.RiskType;
 import jakarta.persistence.*;

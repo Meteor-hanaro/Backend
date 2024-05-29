@@ -1,5 +1,6 @@
 package com.hana.app.data.entity.portfolio;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hana.app.data.entity.BaseEntity;
 import com.hana.app.data.entity.User;
 import jakarta.persistence.*;
