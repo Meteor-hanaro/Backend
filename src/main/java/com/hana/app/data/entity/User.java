@@ -30,4 +30,8 @@ public class User extends BaseEntity {
 
     @Column(name = "phone", nullable = false)
     private String phone;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 }
