@@ -21,7 +21,7 @@ public class VIP extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Users user;
 
     @ManyToOne
     @JoinColumn(name = "pb_id", nullable = false)

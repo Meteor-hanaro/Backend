@@ -1,8 +1,7 @@
 package com.hana.app.data.entity.portfolio;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hana.app.data.entity.BaseEntity;
-import com.hana.app.data.entity.User;
+import com.hana.app.data.entity.Users;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +17,7 @@ public class Portfolio extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vip_id")
-    private User user;
+    private Users user;
 
     @Column(nullable = false, name = "total_value")
     private long totalValue;

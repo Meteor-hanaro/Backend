@@ -1,6 +1,5 @@
 package com.hana.app.data.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
@@ -16,6 +15,6 @@ public enum Role {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Users user;
 
 }
