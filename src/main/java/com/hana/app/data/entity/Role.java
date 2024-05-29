@@ -16,6 +16,6 @@ public enum Role {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private Long user_id;
+    private User user;
 
 }

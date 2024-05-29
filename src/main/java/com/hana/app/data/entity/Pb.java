@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "pb")
 @Getter
@@ -16,17 +18,9 @@ public class Pb extends BaseEntity {
     @Column(name = "pb_id", nullable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false)
-    private String email;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "phone", nullable = false)
-    private String phone;
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<User> user;
 
     @Column(name = "profile_image", nullable = false)
     private String profileImage;
