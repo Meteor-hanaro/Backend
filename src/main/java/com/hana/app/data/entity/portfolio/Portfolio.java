@@ -17,7 +17,7 @@ public class Portfolio extends BaseEntity {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "vip_id")
     private User user;
 
     @Column(nullable = false, name = "total_value")

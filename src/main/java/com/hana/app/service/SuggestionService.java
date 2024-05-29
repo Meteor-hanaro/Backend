@@ -80,6 +80,6 @@ public class SuggestionService {
 
         }
 
-        return new SuggestionDto(suggestions.getFirst(), suggestionItemDtos);
+        return new SuggestionDto(suggestions.get(0), suggestionItemDtos);
     }
 }
