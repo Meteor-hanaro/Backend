@@ -37,8 +37,8 @@ public class Contract extends BaseEntity{
 	private Pb pb;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+	@JoinColumn(name = "vip_id", nullable = false)
+	private VIP vip;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fund_id", nullable = false)
