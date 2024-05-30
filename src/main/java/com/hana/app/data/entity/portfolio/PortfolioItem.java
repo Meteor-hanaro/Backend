@@ -7,7 +7,7 @@ import lombok.*;
 
 @Entity
 @Table(name="portfolio_item")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 public class PortfolioItem extends BaseEntity {
     @Id
