@@ -17,7 +17,7 @@ public class Portfolio extends BaseEntity {
     @Column(name = "portfolio_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "vip_id")
     private VIP vip;
 
