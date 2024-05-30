@@ -17,8 +17,7 @@ public class OCRUtil {
     public static JSONObject getResult(String imgpath, String imgname){
         JSONObject obj = null;
 
-//        String apiURL = "https://gojlwur9ps.apigw.ntruss.com/custom/v1/30135/0c8f803d9a9c355dbcf13a6eda69b2627cc03a78001ff5b02301848cd1954893/infer";
-        String apiURL = "http://clovaocr-api-kr.ncloud.com/external/v1/30135/0c8f803d9a9c355dbcf13a6eda69b2627cc03a78001ff5b02301848cd1954893";
+        String apiURL = "https://gojlwur9ps.apigw.ntruss.com/custom/v1/30135/0c8f803d9a9c355dbcf13a6eda69b2627cc03a78001ff5b02301848cd1954893/infer";
         String secretKey = "cWVobUljUXJ2UXNtbmh6Y2p5YUlVRGxyVGNoS0Nyb2Q=";
         String imageFile = imgpath+imgname;
 

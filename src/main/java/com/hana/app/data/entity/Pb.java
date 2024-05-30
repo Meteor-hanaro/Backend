@@ -1,6 +1,5 @@
 package com.hana.app.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,7 +18,7 @@ public class Pb extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Users user;
 
     @Column(name = "profile_image", nullable = false)
     private String profileImage;
