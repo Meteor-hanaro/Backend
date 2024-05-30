@@ -34,11 +34,11 @@ public class SuggestionService {
         return getSuggestions(suggestions);
     }
 
-    private Long getPortfolioIdByUserId(Long userId) {
+    private Long getPortfolioIdByUserId(Long vipId) {
         Long id = 0L;
 
         try {
-            id = portfolioRepository.findByUserId(userId).getId();
+            id = portfolioRepository.findPortfolioByVipId(vipId).getId();
         } catch (MeteorException e) {
             throw new NotFoundException(ErrorType.NOT_FOUND);
         }
