@@ -28,7 +28,7 @@ public class UsersService {
 
     public UsersDto.TokenInfo login(String email, String password) {
 
-        if (usersRepository.findByEmail(email).isEmpty()) {
+        if (usersRepository.findByEmail(email) == null) {
             throw new NotFoundException(ErrorType.NOT_FOUND);
         }
 
