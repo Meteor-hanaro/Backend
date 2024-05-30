@@ -15,7 +15,7 @@ public class PortfolioDto {
 
     public PortfolioDto(Portfolio portfolio, List<PortfolioItemDto> portfolioItems) {
         this.id = portfolio.getId();
-        this.userName = portfolio.getUser().getName();
+        this.userName = portfolio.getVip().getUser().getName();
         this.totalValue = portfolio.getTotalValue();
         this.portfolioItems = portfolioItems;
     }

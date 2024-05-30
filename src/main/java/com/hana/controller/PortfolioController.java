@@ -18,11 +18,11 @@ public class PortfolioController {
     final PortfolioService portfolioService;
 
     @RequestMapping("/extract")
-    public PortfolioDto getPortfolio(@RequestParam("userId") Long userId) {
+    public PortfolioDto getPortfolio(@RequestParam("vipId") Long vipId) {
         PortfolioDto portfolioDto = null;
 
         try {
-            portfolioDto = portfolioService.getPortfolioByUserId(userId);
+            portfolioDto = portfolioService.getPortfolioByVipId(vipId);
         } catch (MeteorException e) {
             throw new NotFoundException(ErrorType.NOT_FOUND);
         }

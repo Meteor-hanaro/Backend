@@ -19,9 +19,9 @@ public class VIP extends BaseEntity {
     @Column(name = "vip_id", nullable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Users user;
 
     @ManyToOne
     @JoinColumn(name = "pb_id", nullable = false)
