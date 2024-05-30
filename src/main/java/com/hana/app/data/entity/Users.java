@@ -70,4 +70,5 @@ public class Users extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
 }
