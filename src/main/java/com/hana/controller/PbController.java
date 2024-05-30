@@ -1,19 +1,19 @@
 package com.hana.controller;
 
-import com.hana.app.service.UserService;
+import com.hana.app.service.UsersService;
 import com.hana.dto.response.UsersDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/api/pb")
 @RequiredArgsConstructor
 @Slf4j
 public class PbController {
-    private final UserService userService;
+    private final UsersService userService;
 
     @RequestMapping("/login")
     @ResponseBody
