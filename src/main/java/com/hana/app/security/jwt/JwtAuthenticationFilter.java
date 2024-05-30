@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.info("Start JwtAuthenticationFilter -------------------------------------------1");
-        // 1. Request Header 에서 JWT 토큰 추출
+        // 1. Request Header 에서 JWT 토큰(= accessToken) 추출
         String token = resolveToken((HttpServletRequest) request);
         log.info(token);
 
@@ -58,11 +58,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
-    // Request Header 에서 토큰 정보 추출
+    // Request Header 에서 토큰 정보(=accessToken) 추출
     private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
-            return bearerToken.substring(7);
+        String accessToken = request.getHeader("accessToken");
+        if (StringUtils.hasText(accessToken)) {
+            return accessToken;
         }
         return null;
     }
