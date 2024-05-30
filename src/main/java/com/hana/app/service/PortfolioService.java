@@ -27,7 +27,7 @@ public class PortfolioService {
         PortfolioDto portfolioDto = null;
 
         try {
-            Portfolio portfolio = portfolioRepository.findByUserId(userId);
+            Portfolio portfolio = portfolioRepository.findPortfolioByVipId(userId);
             List<PortfolioItemDto> portfolioItems = getPortfolioItems(portfolioItemRepository.findAllByPortfolioId(portfolio.getId()));
             portfolioDto = PortfolioDto.from(portfolio, portfolioItems);
         } catch (MeteorException e) {
