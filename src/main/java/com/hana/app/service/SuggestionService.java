@@ -26,9 +26,9 @@ public class SuggestionService {
     final SuggestionItemRepository suggestionItemRepository;
     final PortfolioRepository portfolioRepository;
 
-    public SuggestionDto getSuggestionListByUserId(Long userId) {
+    public SuggestionDto getSuggestionListByUserId(Long vipId) {
 
-        Long userPortfolioId = getPortfolioIdByUserId(userId);
+        Long userPortfolioId = getPortfolioIdByUserId(vipId);
         List<Suggestion> suggestions = getSuggestionsByPortfolioId(userPortfolioId);
 
         return getSuggestions(suggestions);

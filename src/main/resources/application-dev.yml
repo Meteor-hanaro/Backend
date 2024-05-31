@@ -45,6 +45,7 @@ jwt:
 config:
   url:
     fe: ENC(W4HaYgATG1KYJ+rTsr1J9jjwg6Non+Tgx/d7cKSzTSQ=)
+#    fe: ENC(3WeaP94Nyv/u+y0zNH3eBwK9ObfatN6v9VCtI53Vqwhr1u4GzgQxOQ==)
 
 cloud:
   aws:

@@ -20,7 +20,7 @@ public class SelectPortfolioTests {
 
     @Test
     void contextLoads() {
-        PortfolioDto x = portfolioService.getPortfolioByUserId(1L);
+        PortfolioDto x = portfolioService.getPortfolioByVipId(1L);
         log.info(x.toString());
     }
 }
