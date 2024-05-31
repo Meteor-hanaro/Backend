@@ -49,15 +49,4 @@ public class FundService implements BaseService<Long, Fund> {
     public List<Fund> getAll() {
         return fundRepository.findAll();
     }
-
-    public Long getValueByDate(Long fundId, LocalDateTime currentDate) {
-        List<FundSecurity> x = fundSecurityRepository.findFundSecuritiesByFund_IdOrderByFundSecurityPercentageDesc(fundId);
-        List<Long> fundValues = new ArrayList<>();
-        x.forEach((xx) -> {
-            String security_id = xx.getSecurity().getId();
-            fundValues.add(securityPriceRepository.findSecurityPriceByTradeDateAndSecurityId(currentDate, security_id));
-        });
-        return fundValues.stream().mapToLong(Long::longValue).sum();
-    }
-
 }
