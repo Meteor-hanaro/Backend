@@ -10,6 +10,7 @@ import com.hana.app.repository.portfolio.PortfolioItemRepository;
 import com.hana.app.repository.security.SecurityPriceRepository;
 import com.hana.dto.response.CodeQuantityDto;
 import com.hana.dto.response.PurchaseCompositionDto;
+import com.hana.exception.MeteorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class PortfolioItemService {
     }
 
     //    가입 당시 구조 확보
-    public PurchaseCompositionDto getSecurityQuantity(PortfolioItem portfolioItem, Long inputValue) {
+    public PurchaseCompositionDto getSecurityQuantity(PortfolioItem portfolioItem, Long inputValue) throws MeteorException {
         Optional<Fund> fund_connected_with_item = fundRepository.findById(portfolioItem.getFund().getId());
         LocalDateTime purchase_date = portfolioItem.getCreatedAt();
         List<CodeQuantityDto> codeQuantityDtos = new ArrayList<>();
@@ -45,8 +46,6 @@ public class PortfolioItemService {
             if (!fundSecurities.isEmpty()) {
                 fundSecurities.forEach(security -> {
 //                펀드 구입 시점의 security의 가격
-                    log.info(purchase_date.toString());
-                    log.info(security.getSecurity().getId());
                     SecurityPrice securityPrice = securityPriceRepository.findSecurityPriceByTradeDateAndSecurityId(purchase_date, security.getSecurity().getId());
                     Long init_price = securityPrice.getTradePrice();
 
@@ -61,4 +60,35 @@ public class PortfolioItemService {
         }
         return null;
     }
+
+    public Long getCurrentValue(Long portfolioItemId) {
+        Optional<PortfolioItem> portfolioItem = portfolioItemRepository.findById(portfolioItemId);
+
+        if (portfolioItem.isPresent()) {
+            PurchaseCompositionDto securityQuantity = getSecurityQuantity(portfolioItem.get(), portfolioItem.get().getStartAmount());
+            List<Long> prices = new ArrayList<>();
+            securityQuantity.getCodeQuantityDtos().forEach((x) -> {
+//                공휴일이거나 주말이거나 하면 데이터가 빈다. 어떻게 해야?
+                SecurityPrice temp_price = null;
+                int minus_days = 365;
+                do {
+                    LocalDateTime n = LocalDateTime.now().minusDays(minus_days++).withHour(0).withMinute(0).withSecond(0).withNano(0);
+                    temp_price = securityPriceRepository.findSecurityPriceByTradeDateAndSecurityId(n, x.getSecurityCode());
+                    log.info("{}, {}", n, x.getSecurityCode());
+                } while (temp_price == null);
+
+                String security_code = x.getSecurityCode();
+                Long quantity = x.getQuantity();
+                Long cur_price = temp_price.getTradePrice();
+                log.info("Code: {} Quantity: {} Trade price: {}, cur_val: {}", security_code, quantity, LocalDateTime.now(), quantity * cur_price);
+                prices.add(quantity * cur_price);
+
+            });
+
+            return prices.stream().mapToLong(i -> i).sum();
+        }
+
+        return 0L;
+    }
+
 }
