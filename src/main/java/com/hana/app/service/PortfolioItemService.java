@@ -3,8 +3,10 @@ package com.hana.app.service;
 import com.hana.app.data.entity.fund.Fund;
 import com.hana.app.data.entity.fund.FundSecurity;
 import com.hana.app.data.entity.portfolio.PortfolioItem;
+import com.hana.app.data.entity.security.SecurityPrice;
 import com.hana.app.repository.fund.FundRepository;
 import com.hana.app.repository.fund.FundSecurityRepository;
+import com.hana.app.repository.portfolio.PortfolioItemRepository;
 import com.hana.app.repository.security.SecurityPriceRepository;
 import com.hana.dto.response.CodeQuantityDto;
 import com.hana.dto.response.PurchaseCompositionDto;
@@ -25,10 +27,12 @@ public class PortfolioItemService {
     final FundSecurityRepository fundSecurityRepository;
     final SecurityPriceRepository securityPriceRepository;
     final FundRepository fundRepository;
+    final PortfolioItemRepository portfolioItemRepository;
 
-    public String dummy() {
-        return "HEHEH";
+    public Optional<PortfolioItem> getPortfolioItem(Long id) {
+        return portfolioItemRepository.findById(id);
     }
+
     //    가입 당시 구조 확보
     public PurchaseCompositionDto getSecurityQuantity(PortfolioItem portfolioItem, Long inputValue) {
         Optional<Fund> fund_connected_with_item = fundRepository.findById(portfolioItem.getFund().getId());
@@ -38,12 +42,20 @@ public class PortfolioItemService {
             Fund fund = fund_connected_with_item.get();
 //            펀드의 구조
             List<FundSecurity> fundSecurities = fundSecurityRepository.findFundSecuritiesByFund_IdOrderByFundSecurityPercentageDesc(fund.getId());
-            fundSecurities.forEach(security -> {
+            if (!fundSecurities.isEmpty()) {
+                fundSecurities.forEach(security -> {
 //                펀드 구입 시점의 security의 가격
-                Long init_price = securityPriceRepository.findSecurityPriceByTradeDateAndSecurityId(purchase_date, security.getSecurity().getId()).getTradePrice();
-                Long init_quantity = inputValue * (security.getFundSecurityPercentage() / 100) / init_price;
-                codeQuantityDtos.add(CodeQuantityDto.from(security.getSecurity().getId(), init_quantity));
-            });
+                    log.info(purchase_date.toString());
+                    log.info(security.getSecurity().getId());
+                    SecurityPrice securityPrice = securityPriceRepository.findSecurityPriceByTradeDateAndSecurityId(purchase_date, security.getSecurity().getId());
+                    Long init_price = securityPrice.getTradePrice();
+
+                    long init_quantity = inputValue * security.getFundSecurityPercentage() / init_price;
+                    codeQuantityDtos.add(CodeQuantityDto.from(security.getSecurity().getId(), init_quantity / 100));
+                });
+            } else {
+                return null;
+            }
 
             return PurchaseCompositionDto.from(codeQuantityDtos);
         }
