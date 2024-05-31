@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CodeQuantityDto {
     private final String securityCode;
-    private final Integer quantity;
+    private final Long quantity;
 
-    public static CodeQuantityDto from(String securityCode, Integer quantity) {
+    public static CodeQuantityDto from(String securityCode, Long quantity) {
         return new CodeQuantityDto(securityCode, quantity);
     }
 }
