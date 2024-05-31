@@ -9,6 +9,7 @@ import com.hana.app.repository.fund.FundSecurityRepository;
 import com.hana.app.repository.portfolio.PortfolioItemRepository;
 import com.hana.app.repository.security.SecurityPriceRepository;
 import com.hana.dto.response.CodeQuantityDto;
+import com.hana.dto.response.PortfolioItemResponseDto;
 import com.hana.dto.response.PurchaseCompositionDto;
 import com.hana.exception.MeteorException;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class PortfolioItemService {
     }
 
     //    가입 당시 구조 확보
-    public PurchaseCompositionDto getSecurityQuantity(PortfolioItem portfolioItem, Long inputValue) throws MeteorException {
+    private PurchaseCompositionDto getSecurityQuantity(PortfolioItem portfolioItem, Long inputValue) throws MeteorException {
         Optional<Fund> fund_connected_with_item = fundRepository.findById(portfolioItem.getFund().getId());
         LocalDateTime purchase_date = portfolioItem.getCreatedAt();
         List<CodeQuantityDto> codeQuantityDtos = new ArrayList<>();
@@ -46,8 +47,14 @@ public class PortfolioItemService {
             if (!fundSecurities.isEmpty()) {
                 fundSecurities.forEach(security -> {
 //                펀드 구입 시점의 security의 가격
+                    log.info("{} {}", purchase_date.toString(), security.getSecurity().getId());
+
                     SecurityPrice securityPrice = securityPriceRepository.findSecurityPriceByTradeDateAndSecurityId(purchase_date, security.getSecurity().getId());
-                    Long init_price = securityPrice.getTradePrice();
+                    Long init_price = 100L;
+                    if (securityPrice != null) {
+                        init_price = securityPrice.getTradePrice();
+                    }
+
 
                     long init_quantity = inputValue * security.getFundSecurityPercentage() / init_price;
                     codeQuantityDtos.add(CodeQuantityDto.from(security.getSecurity().getId(), init_quantity / 100));
@@ -61,6 +68,7 @@ public class PortfolioItemService {
         return null;
     }
 
+    //    포트폴리오를 구성하는 펀드 하나의 현 시점 가치를 계산하기.
     public Long getCurrentValue(Long portfolioItemId) {
         Optional<PortfolioItem> portfolioItem = portfolioItemRepository.findById(portfolioItemId);
 
@@ -89,6 +97,10 @@ public class PortfolioItemService {
         }
 
         return 0L;
+    }
+
+    public PortfolioItemResponseDto getPortfolioItemResponseDto(PortfolioItem portfolioItem) {
+        return PortfolioItemResponseDto.from(portfolioItem.getFund().getName(), portfolioItem.getStartAmount(), portfolioItem.getCreatedAt(), getCurrentValue(portfolioItem.getId()));
     }
 
 }
