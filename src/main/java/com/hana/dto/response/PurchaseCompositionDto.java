@@ -9,10 +9,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PurchaseCompositionDto {
     private final List<CodeQuantityDto> codeQuantityDtos;
-    private final long leftover;
 
-    public static PurchaseCompositionDto from(List<CodeQuantityDto> codeQuantityDtoList, Long leftover) {
-        return new PurchaseCompositionDto(codeQuantityDtoList, leftover);
+    public static PurchaseCompositionDto from(List<CodeQuantityDto> codeQuantityDtoList) {
+        return new PurchaseCompositionDto(codeQuantityDtoList);
     }
 
 }
