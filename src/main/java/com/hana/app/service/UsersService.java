@@ -46,7 +46,9 @@ public class UsersService {
         }
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
+        // 이때, 사용자의 이름도 JWT 토큰에 저장
         UsersDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+        tokenInfo.setUserName(usersRepository.findByEmail(authentication.getName()).getName());
 
         // 4. RefreshToken Redis 저장 (expirationTime 설정을 통해 자동 삭제 처리)
         log.info("RT:" + authentication.getName()+" : "+tokenInfo.getRefreshToken()+" : "+tokenInfo.getRefreshTokenExpirationTime()+" : "+ TimeUnit.MILLISECONDS);
