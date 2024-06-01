@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -49,5 +51,12 @@ public class PortfolioService {
         }
 
         return list;
+    }
+
+    public LocalDateTime getEarliestCreatedAt(List<PortfolioItemDto> portfolioItemDtos) {
+        return portfolioItemDtos.stream()
+                .map(PortfolioItemDto::getCreatedAt)
+                .min(Comparator.naturalOrder())
+                .orElse(null); // Return null if the list is empty
     }
 }
