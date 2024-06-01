@@ -1,7 +1,13 @@
 package com.hana.app.service;
 
+import com.hana.app.data.entity.IntegratedPb;
+import com.hana.app.data.entity.IntegratedVip;
+import com.hana.app.repository.ConsultRepository;
+import com.hana.app.repository.IntegratedPbRepository;
+import com.hana.app.repository.IntegratedVipRepository;
 import com.hana.app.repository.UsersRepository;
 import com.hana.app.security.jwt.JwtTokenProvider;
+import com.hana.dto.response.PbDto;
 import com.hana.dto.response.UsersDto;
 import com.hana.exception.NotFoundException;
 import com.hana.response.ErrorType;
@@ -14,6 +20,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -21,10 +31,14 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class UsersService {
 
-    private final UsersRepository usersRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisTemplate redisTemplate;
+
+    private final IntegratedPbRepository integratedPbRepository;
+    private final IntegratedVipRepository integratedVipRepository;
+    private final UsersRepository usersRepository;
+    private final ConsultRepository consultRepository;
 
     public UsersDto.TokenInfo login(String email, String password) {
 
@@ -58,4 +72,30 @@ public class UsersService {
         log.info(tokenInfo + " : 로그인에 성공했습니다.");
         return tokenInfo;
     }
+
+    public PbDto getVipList(String token) {
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        IntegratedPb pb = integratedPbRepository.findByEmail(authentication.getName());
+
+        // pb 담당 vip 정보
+        List<PbDto.VipInfo> vipList = new ArrayList<>();
+        for(IntegratedVip v: integratedVipRepository.findByPbId(pb.getPbId())){
+            PbDto.VipInfo temp = PbDto.VipInfo.builder()
+                    .vipId(v.getVipId())
+                    .name(v.getName())
+                    // status
+                    .riskType(v.getRiskType())
+                    .consultDate(getMaxStartedAt(v.getVipId()))
+                    .build();
+            vipList.add(temp);
+        }
+
+        return new PbDto(vipList);
+    }
+
+    public String getMaxStartedAt(Long vipId){
+        LocalDateTime maxStartedAt = consultRepository.findMaxStartedAtByVipId(vipId);
+        return maxStartedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
 }
