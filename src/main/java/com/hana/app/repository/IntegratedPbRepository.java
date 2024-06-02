@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IntegratedPbRepository extends JpaRepository<IntegratedPb, Long> {
     IntegratedPb findByEmail(String name);
+
+    IntegratedPb findByPbId(Long pbId);
 }

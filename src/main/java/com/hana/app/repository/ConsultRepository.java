@@ -7,9 +7,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface ConsultRepository extends JpaRepository<Consult, Long> {
     @Query("SELECT MAX(c.startedAt) FROM Consult c WHERE c.vip.id = :vipId")
     LocalDateTime findMaxStartedAtByVipId(@Param("vipId") Long vipId);
+
+    List<Consult> findByVipId(Long vipId);
 }

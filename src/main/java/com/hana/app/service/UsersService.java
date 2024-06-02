@@ -1,5 +1,6 @@
 package com.hana.app.service;
 
+import com.hana.app.data.entity.Consult;
 import com.hana.app.data.entity.IntegratedPb;
 import com.hana.app.data.entity.IntegratedVip;
 import com.hana.app.repository.ConsultRepository;
@@ -9,6 +10,7 @@ import com.hana.app.repository.UsersRepository;
 import com.hana.app.security.jwt.JwtTokenProvider;
 import com.hana.dto.response.PbDto;
 import com.hana.dto.response.UsersDto;
+import com.hana.dto.response.VipDto;
 import com.hana.exception.NotFoundException;
 import com.hana.response.ErrorType;
 import lombok.RequiredArgsConstructor;
@@ -94,8 +96,60 @@ public class UsersService {
     }
 
     public String getMaxStartedAt(Long vipId){
-        LocalDateTime maxStartedAt = consultRepository.findMaxStartedAtByVipId(vipId);
-        return maxStartedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return localDateTime2String(consultRepository.findMaxStartedAtByVipId(vipId));
+    }
+
+    public VipDto getVipMainInfo(String token){
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        IntegratedVip vip = integratedVipRepository.findByEmail(authentication.getName());
+
+        // 1. vipInfo
+        VipDto.VipInfo vipInfo = getVipInfo(vip);
+
+        // 2. pbInfo
+        VipDto.PbInfo pbInfo = getPbInfo(vip.getPbId());
+
+        // 3. consultList
+        List<Consult> consultList = getConsultList(vip.getVipId());
+
+        // 4. result
+        return VipDto.builder()
+                .vipInfo(vipInfo)
+                .pbInfo(pbInfo)
+                .consultList(consultList)
+                .build();
+    }
+
+    public VipDto.VipInfo getVipInfo(IntegratedVip vip) {
+
+        return VipDto.VipInfo.builder()
+                .vipId(vip.getVipId())
+                .password(vip.getPassword())
+                .name(vip.getName())
+                .riskType(vip.getRiskType())
+                .riskTestDate(localDateTime2String(vip.getTestedAt()))
+                .build();
+    }
+
+    public VipDto.PbInfo getPbInfo(Long pbId){
+        IntegratedPb pb = integratedPbRepository.findByPbId(pbId);
+
+        return VipDto.PbInfo.builder()
+                .pbId(pb.getPbId())
+                .name(pb.getName())
+                .email(pb.getEmail())
+                .phone(pb.getPhone())
+                .image(pb.getImage())
+                .introduce(pb.getIntroduce())
+                .build();
+    }
+
+    public List<Consult> getConsultList(Long vipId){
+        return consultRepository.findByVipId(vipId);
+    }
+
+    public String localDateTime2String(LocalDateTime value){
+        return value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
 }
