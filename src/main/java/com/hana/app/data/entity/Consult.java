@@ -1,5 +1,6 @@
 package com.hana.app.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,10 +18,12 @@ public class Consult extends BaseEntity{
     @Column(name = "consult_id", nullable = false)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vip_id")
     private VIP vip;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pb_id")
     private Pb pb;
@@ -33,4 +36,16 @@ public class Consult extends BaseEntity{
 
     @Column(name = "record")
     private String record;
+
+    @Override
+    public String toString() {
+        return "Consult{" +
+                "id=" + id +
+                ", vip=" + vip +
+                ", pb=" + pb +
+                ", content='" + content + '\'' +
+                ", startedAt=" + startedAt +
+                ", record='" + record + '\'' +
+                '}';
+    }
 }

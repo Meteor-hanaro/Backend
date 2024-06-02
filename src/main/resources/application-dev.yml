@@ -21,6 +21,11 @@ spring:
         physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
         default_batch_fetch_size: 500
     database: mysql
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 1111
   springdoc:
     swagger-ui:
       tags-sorter: method
@@ -32,7 +37,9 @@ spring:
     cache:
       disabled: true
     default-consumes-media-type: application/json;charset=UTF-8
-    default-produces-media-type: application/json;charset=UTF-8
+
+jwt:
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 
 config:
   url:
@@ -49,3 +56,6 @@ cloud:
       bucket: hanaro-meteor
     stack:
       auto: false
+apikey:
+  ocrurl: ENC(Igc2XEdkgbhm4z4tmVglnRyOUuD+jXDnvTux9feT3C3W8lAYh5rm2JFg5xXYowJuSBpQ7F4HYryHcGHzOFF8k3iZsglTR4gGdiS36mkTKDCrQdxZlALYZPyrmmfT+l9exiQ7UPqrJsn71R6nqLYcr4v6ih54cQ6up3et0vfn/NHg6oGThQZA0A==)
+  ocrkey: ENC(/E0Q+vjUWFzylRPl9dYBiA6eQUzUiDUu4AoHtAXoxtWtuwAW1Z1DAdFMlooMf0dvfZx33pOXZfU=)
