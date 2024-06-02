@@ -2,10 +2,12 @@ package com.hana.app.service;
 
 import com.hana.app.data.entity.portfolio.Portfolio;
 import com.hana.app.data.entity.portfolio.PortfolioItem;
+import com.hana.app.data.entity.security.SecurityPrice;
 import com.hana.app.repository.UsersRepository;
 import com.hana.app.repository.portfolio.PortfolioItemRepository;
 import com.hana.app.repository.portfolio.PortfolioRepository;
 import com.hana.dto.response.PortfolioDto;
+import com.hana.dto.response.PortfolioGraphDto;
 import com.hana.dto.response.PortfolioItemDto;
 import com.hana.exception.MeteorException;
 import com.hana.exception.NotFoundException;
@@ -15,9 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -54,9 +55,57 @@ public class PortfolioService {
     }
 
     public LocalDateTime getEarliestCreatedAt(List<PortfolioItemDto> portfolioItemDtos) {
-        return portfolioItemDtos.stream()
-                .map(PortfolioItemDto::getCreatedAt)
-                .min(Comparator.naturalOrder())
-                .orElse(null); // Return null if the list is empty
+        return portfolioItemDtos.stream().map(PortfolioItemDto::getCreatedAt).min(Comparator.naturalOrder()).orElse(null); // Return null if the list is empty
+    }
+
+    public PortfolioGraphDto fillPriceHistory(String security_code, List<SecurityPrice> priceHistory, LocalDateTime earliestDate, LocalDateTime startDate) {
+        // Create a map from date to price for quick lookup
+        Map<LocalDateTime, Long> priceMap = new HashMap<>();
+        for (SecurityPrice sp : priceHistory) {
+            priceMap.put(sp.getTradeDate().truncatedTo(ChronoUnit.DAYS), sp.getTradePrice());
+        }
+
+        LocalDateTime currentDate = earliestDate.truncatedTo(ChronoUnit.DAYS);
+        long lastPrice = 0L;
+
+        List<Long> priceList = new ArrayList<>();
+        List<String> dateList = new ArrayList<>();
+
+        LocalDateTime today = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+
+
+        while (!currentDate.isAfter(today)) {
+            if (currentDate.isBefore(startDate)) {
+                // Start date 이전에는 0을 추가
+                priceList.add(0L);
+            } else {
+                // Start date 이후에는 priceMap에서 가져오거나 lastPrice를 사용
+                if (priceMap.containsKey(currentDate)) {
+                    lastPrice = priceMap.get(currentDate);
+                }
+                priceList.add(lastPrice);
+            }
+            dateList.add(currentDate.getYear() + "-" + currentDate.getMonthValue() + "-" + currentDate.getDayOfMonth());
+            currentDate = currentDate.plusDays(1);
+        }
+
+        return PortfolioGraphDto.from(security_code, dateList, priceList);
+    }
+
+    public PortfolioGraphDto assemblePriceHistory(String fundName, List<PortfolioGraphDto> portfolioGraphDtos) {
+        int serial_length = portfolioGraphDtos.get(0).getSerialValue().size();
+        List<Long> new_serial_value = new ArrayList<>();
+        List<String> new_serial_date = portfolioGraphDtos.get(0).getSerialTime();
+
+        for (int i = 0; i < serial_length; i++) {
+
+            long dummy = 0L;
+            for (PortfolioGraphDto portfolioGraphDto : portfolioGraphDtos) {
+                dummy += portfolioGraphDto.getSerialValue().get(i);
+            }
+            new_serial_value.add(dummy);
+        }
+
+        return PortfolioGraphDto.from(fundName, new_serial_date, new_serial_value);
     }
 }
