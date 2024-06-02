@@ -5,10 +5,12 @@ import lombok.Getter;
 
 @Getter
 public class SuggestionItemCompositionDto {
+    private Long suggestionItemId;
     private String suggestionItemName;
     private Long suggestionValue;
 
     public SuggestionItemCompositionDto(SuggestionItem suggestionItem) {
+        this.suggestionItemId = suggestionItem.getFund().getId();
         this.suggestionItemName = suggestionItem.getFund().getName();
         this.suggestionValue = suggestionItem.getFundValue();
     }
