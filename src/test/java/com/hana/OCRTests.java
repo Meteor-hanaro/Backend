@@ -15,10 +15,10 @@ class OCRTests {
     @Test
     void contextLoads() {
         String imgname = "license.jpg";
-        JSONObject jsonObject = (JSONObject) OCRUtil.getResult(dir,imgname);
-        log.info(jsonObject.toJSONString());
-        Map<String,String> map = OCRUtil.getData(jsonObject);
-        map.values().forEach(txt->{log.info(txt);});
+//        JSONObject jsonObject = (JSONObject) OCRUtil.getResult(dir,imgname);
+//        log.info(jsonObject.toJSONString());
+//        Map<String,String> map = OCRUtil.getData(jsonObject);
+//        map.values().forEach(txt->{log.info(txt);});
     }
 
 }

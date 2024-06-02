@@ -3,6 +3,7 @@ package com.hana.util;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -14,11 +15,10 @@ import java.util.UUID;
 
 public class OCRUtil {
 //    public static JSONObject getResult(String imageFile){
-    public static JSONObject getResult(String imgpath, String imgname){
+    public static JSONObject getResult(String ocrkey, String ocrurl, String imgpath, String imgname){
         JSONObject obj = null;
-
-        String apiURL = "https://gojlwur9ps.apigw.ntruss.com/custom/v1/30135/0c8f803d9a9c355dbcf13a6eda69b2627cc03a78001ff5b02301848cd1954893/infer";
-        String secretKey = "cWVobUljUXJ2UXNtbmh6Y2p5YUlVRGxyVGNoS0Nyb2Q=";
+        String apiURL = ocrurl;
+        String secretKey = ocrkey;
         String imageFile = imgpath+imgname;
 
         try {

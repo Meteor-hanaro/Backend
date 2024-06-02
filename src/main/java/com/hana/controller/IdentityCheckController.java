@@ -3,6 +3,7 @@ package com.hana.controller;
 import com.hana.util.OCRUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/id")
 public class IdentityCheckController {
+    @Value("${apikey.ocrkey}")
+    private String ocrkey;
+    @Value("${apikey.ocrurl}")
+    private String ocrurl;
     @PostMapping("/ocr")
     public String ocr(@RequestParam("image") MultipartFile image) {
         log.info("==========checking image========="+image.getOriginalFilename());
@@ -27,7 +32,7 @@ public class IdentityCheckController {
             File imgFile = new File(imgpath+imgname);
             image.transferTo(imgFile);
 
-            JSONObject jsonObject = OCRUtil.getResult(imgpath, imgname);
+            JSONObject jsonObject = OCRUtil.getResult(ocrkey, ocrurl, imgpath, imgname);
             log.info(jsonObject.toJSONString());
 
             Map<String,String> map = OCRUtil.getData(jsonObject);
@@ -40,4 +45,9 @@ public class IdentityCheckController {
             return "File transfer failed";
         }
     }
+//    @PostMapping("/combinePdf")
+//    public String combinePdf() {
+//        log.info("==========checking signiture=========");
+//        return "Good";
+//    }
 }
