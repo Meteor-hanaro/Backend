@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface SecurityPriceRepository extends JpaRepository<SecurityPrice, String> {
     List<SecurityPrice> findBySecurityId(String securityId);
-
+    List<SecurityPrice> findBySecurityIdAndTradeDateBetween(String securityId, LocalDateTime startDate, LocalDateTime endDate);
     SecurityPrice findSecurityPriceByTradeDateAndSecurityId(LocalDateTime tradeDate, String securityId);
 }
