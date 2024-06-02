@@ -36,7 +36,7 @@ public class PortfolioItemService {
     }
 
     //    가입 당시 구조 확보
-    private PurchaseCompositionDto getSecurityQuantity(PortfolioItem portfolioItem, Long inputValue) throws MeteorException {
+    public PurchaseCompositionDto getSecurityQuantity(PortfolioItem portfolioItem, Long inputValue) throws MeteorException {
         Optional<Fund> fund_connected_with_item = fundRepository.findById(portfolioItem.getFund().getId());
         LocalDateTime purchase_date = portfolioItem.getCreatedAt();
         List<CodeQuantityDto> codeQuantityDtos = new ArrayList<>();
@@ -46,9 +46,6 @@ public class PortfolioItemService {
             List<FundSecurity> fundSecurities = fundSecurityRepository.findFundSecuritiesByFund_IdOrderByFundSecurityPercentageDesc(fund.getId());
             if (!fundSecurities.isEmpty()) {
                 fundSecurities.forEach(security -> {
-//                펀드 구입 시점의 security의 가격
-                    log.info("{} {}", purchase_date.toString(), security.getSecurity().getId());
-
                     SecurityPrice securityPrice = securityPriceRepository.findSecurityPriceByTradeDateAndSecurityId(purchase_date, security.getSecurity().getId());
                     Long init_price = 100L;
                     if (securityPrice != null) {
@@ -78,17 +75,15 @@ public class PortfolioItemService {
             securityQuantity.getCodeQuantityDtos().forEach((x) -> {
 //                공휴일이거나 주말이거나 하면 데이터가 빈다. 어떻게 해야?
                 SecurityPrice temp_price = null;
-                int minus_days = 365;
+                int minus_days = 0;
                 do {
                     LocalDateTime n = LocalDateTime.now().minusDays(minus_days++).withHour(0).withMinute(0).withSecond(0).withNano(0);
                     temp_price = securityPriceRepository.findSecurityPriceByTradeDateAndSecurityId(n, x.getSecurityCode());
-                    log.info("{}, {}", n, x.getSecurityCode());
                 } while (temp_price == null);
 
                 String security_code = x.getSecurityCode();
                 Long quantity = x.getQuantity();
                 Long cur_price = temp_price.getTradePrice();
-                log.info("Code: {} Quantity: {} Trade price: {}, cur_val: {}", security_code, quantity, LocalDateTime.now(), quantity * cur_price);
                 prices.add(quantity * cur_price);
 
             });
