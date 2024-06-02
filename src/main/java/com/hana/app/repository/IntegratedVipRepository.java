@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface IntegratedVipRepository extends JpaRepository<IntegratedVip, Long> {
     List<IntegratedVip> findByPbId(Long pbId);
+
+    IntegratedVip findByEmail(String name);
 }
