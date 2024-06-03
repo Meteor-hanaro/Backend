@@ -24,6 +24,12 @@ public class VipController {
         return userService.login(email, password);
     }
 
+    @RequestMapping("/logout")
+    @ResponseBody
+    public void logout(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken) {
+        userService.logout(accessToken);
+    }
+
     @RequestMapping("/main")
     @ResponseBody
     public VipDto info(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken) {
