@@ -1,6 +1,7 @@
 package com.hana.controller;
 
 import com.hana.app.service.UsersService;
+import com.hana.app.service.VipService;
 import com.hana.dto.response.UsersDto;
 import com.hana.dto.response.VipDto;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.Map;
 @Slf4j
 public class VipController {
     private final UsersService userService;
+    private final VipService vipService;
 
     @RequestMapping("/login")
     @ResponseBody
@@ -47,5 +49,10 @@ public class VipController {
         }else{
             return false;
         }
+    }
+
+    @RequestMapping("/name")
+    public String getUserNameByVipId(Long vipId) {
+        return vipService.getVipByVipId(vipId).getUser().getName();
     }
 }
