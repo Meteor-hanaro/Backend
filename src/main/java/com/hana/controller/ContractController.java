@@ -34,7 +34,7 @@ public class ContractController {
 		return s3Service.uploadPdf(file, "contract");
 	}
 
-	@GetMapping("/join")
+	@PostMapping("/join")
 	public List<FundContractsResponseDto> getFundContractsByIds(@RequestBody Map<String, List<Long>> request) {
 		List<Long> fundIds = request.get("fundIds");
 		return fundContractService.getFundJoinContractsByFundIds(fundIds);
