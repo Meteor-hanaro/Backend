@@ -33,7 +33,14 @@ public class PbController {
     @RequestMapping("/main")
     @ResponseBody
     public PbDto info(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken) {
-        return userService.getVipList(accessToken);
+        return new PbDto(userService.getVipList(accessToken), userService.getVipStateList(accessToken));
+    }
+
+
+    @RequestMapping("/main/state")
+    @ResponseBody
+    public PbDto getLoginState(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken){
+        return new PbDto(null, userService.getVipStateList(accessToken));
     }
 
     @RequestMapping("/main/state")
