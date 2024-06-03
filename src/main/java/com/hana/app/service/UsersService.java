@@ -99,7 +99,7 @@ public class UsersService {
         // 5. 이후 JwtAuthenticationFilter 에서 redis에 있는 logout 정보를 가지고 와서 접근을 거부함
     }
 
-    public PbDto getVipList(String token) {
+    public List<PbDto.VipInfo> getVipList(String token) {
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
         IntegratedPb pb = integratedPbRepository.findByEmail(authentication.getName());
 
@@ -109,14 +109,34 @@ public class UsersService {
             PbDto.VipInfo temp = PbDto.VipInfo.builder()
                     .vipId(v.getVipId())
                     .name(v.getName())
-                    // status
                     .riskType(v.getRiskType())
                     .consultDate(getMaxStartedAt(v.getVipId()))
                     .build();
             vipList.add(temp);
         }
 
-        return new PbDto(vipList);
+        return vipList;
+    }
+
+    public List<PbDto.VipState> getVipStateList(String token) {
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        IntegratedPb pb = integratedPbRepository.findByEmail(authentication.getName());
+
+        // pb 담당 vip의 접속 여부 정보
+        List<PbDto.VipState> stateList = new ArrayList<>();
+        for(IntegratedVip v: integratedVipRepository.findByPbId(pb.getPbId())){
+            boolean state = true;
+            if (redisTemplate.opsForValue().get("RT:" + v.getEmail()) == null) {
+                state = false;
+            }
+
+            PbDto.VipState temp = PbDto.VipState.builder()
+                    .state(state)
+                    .build();
+            stateList.add(temp);
+        }
+
+        return stateList;
     }
 
     public String getMaxStartedAt(Long vipId){
