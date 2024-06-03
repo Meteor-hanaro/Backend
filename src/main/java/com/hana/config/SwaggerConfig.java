@@ -160,17 +160,17 @@ public class SwaggerConfig {
 
     @Bean
     public GroupedOpenApi chatOpenApiUser() {
-        String[] paths = { "/api/user/**" }; // 해당 path인경우에만 스웨거에 추가되도록 설정
+        String[] paths = { "/api/vip/**" }; // 해당 path인경우에만 스웨거에 추가되도록 설정
 
         return GroupedOpenApi
                 .builder()
-                .group("User")
+                .group("Vip")
                 .pathsToMatch(paths)
                 .addOpenApiCustomizer(
                         openApi -> openApi.setInfo(
                                 new Info()
-                                        .title("API - User") // API 제목
-                                        .description("Meteor User API") // API 설명
+                                        .title("API - Vip") // API 제목
+                                        .description("Meteor Vip API") // API 설명
                                         .version("1.0.0") // API 버전
                         )
                 )

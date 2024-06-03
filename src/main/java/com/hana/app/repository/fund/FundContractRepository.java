@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface FundContractRepository extends JpaRepository<FundContract, Long> {
 
 	List<FundContract> findByFundId(Long fundId);
+
+	List<FundContract> findByFundIdIn(List<Long> fundIds);
 }

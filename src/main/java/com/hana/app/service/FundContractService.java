@@ -6,9 +6,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hana.app.data.entity.fund.Fund;
 import com.hana.app.data.entity.fund.FundContract;
 import com.hana.app.repository.fund.FundContractRepository;
+import com.hana.app.repository.fund.FundRepository;
 import com.hana.dto.response.FundContractDto;
+import com.hana.dto.response.FundContractsResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,12 +21,20 @@ import lombok.RequiredArgsConstructor;
 public class FundContractService {
 
 	private final FundContractRepository fundContractRepository;
+	private final FundRepository fundRepository;
 
-	public List<FundContractDto> getFundJoinContractsByFundId(Long fundId) {
-		List<FundContract> fundContracts = fundContractRepository.findByFundId(fundId);
-		return fundContracts.stream()
-			.filter(fundContract -> fundContract.getContractType().equals(FundContract.ContractType.JOIN))
-			.map(FundContractDto::from)
-			.collect(Collectors.toList());
+	public List<FundContractsResponseDto> getFundJoinContractsByFundIds(List<Long> fundIds) {
+		List<Fund> funds = fundRepository.findByIdIn(fundIds);
+		List<FundContract> fundContracts = fundContractRepository.findByFundIdIn(fundIds);
+
+		return funds.stream().map(fund -> {
+			List<FundContractDto> fundContractDtos = fundContracts.stream()
+				.filter(contract -> contract.getFund().getId().equals(fund.getId()))
+				.filter(fundContract -> fundContract.getContractType().equals(FundContract.ContractType.JOIN))
+				.map(FundContractDto::from)
+				.collect(Collectors.toList());
+
+			return FundContractsResponseDto.from(fund, fundContractDtos);
+		}).collect(Collectors.toList());
 	}
 }

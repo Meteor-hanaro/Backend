@@ -12,6 +12,7 @@ import com.hana.dto.response.PbDto;
 import com.hana.dto.response.UsersDto;
 import com.hana.dto.response.VipDto;
 import com.hana.exception.NotFoundException;
+import com.hana.exception.UnauthorizedException;
 import com.hana.response.ErrorType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,6 +74,29 @@ public class UsersService {
         // 5.
         log.info(tokenInfo + " : 로그인에 성공했습니다.");
         return tokenInfo;
+    }
+
+    public void logout(String accessToken) {
+        // 1. Access Token 검증
+        if (!jwtTokenProvider.validateToken(accessToken)) {
+            throw new UnauthorizedException(ErrorType.UNAUTHORIZED);
+        }
+
+        // 2. Access Token 에서 User email 을 가져옵니다.
+        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+
+        // 3. Redis 에서 해당 User email 로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제합니다.
+        if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
+            // Refresh Token 삭제
+            redisTemplate.delete("RT:" + authentication.getName());
+        }
+
+        // 4. 해당 Access Token 유효시간 가지고 와서 BlackList 로 저장하기
+        Long expiration = jwtTokenProvider.getExpiration(accessToken);
+        redisTemplate.opsForValue()
+                .set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
+
+        // 5. 이후 JwtAuthenticationFilter 에서 redis에 있는 logout 정보를 가지고 와서 접근을 거부함
     }
 
     public PbDto getVipList(String token) {
