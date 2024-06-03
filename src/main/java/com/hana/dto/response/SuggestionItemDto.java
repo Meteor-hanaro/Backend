@@ -1,7 +1,6 @@
 package com.hana.dto.response;
 
 import com.hana.app.data.entity.suggestion.Suggestion;
-import com.hana.app.data.entity.suggestion.SuggestionItem;
 import lombok.Getter;
 
 import java.util.List;
