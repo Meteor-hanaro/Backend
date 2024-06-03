@@ -5,10 +5,11 @@ import com.hana.dto.response.UsersDto;
 import com.hana.dto.response.VipDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/vip")
@@ -27,5 +28,18 @@ public class VipController {
     @ResponseBody
     public VipDto info(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken) {
         return userService.getVipMainInfo(accessToken);
+    }
+
+    @PostMapping("/main/pwdcheck")
+    public Boolean isAuthenticated(@RequestBody Map<String, String> requestData) {
+        String password = requestData.get("pwd");
+        String writtenPwd = requestData.get("writtenPwd");
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (passwordEncoder.matches(writtenPwd, password)) {
+            return true;
+        }else{
+            return false;
+        }
     }
 }
