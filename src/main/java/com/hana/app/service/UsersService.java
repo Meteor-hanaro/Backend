@@ -175,4 +175,8 @@ public class UsersService {
     public String localDateTime2String(LocalDateTime value){
         return value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
+    public IntegratedVip findByVipID(Long vipId){
+        return integratedVipRepository.findByVipId(vipId);
+    }
+
 }

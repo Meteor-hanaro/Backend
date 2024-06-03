@@ -9,4 +9,5 @@ public interface IntegratedVipRepository extends JpaRepository<IntegratedVip, Lo
     List<IntegratedVip> findByPbId(Long pbId);
 
     IntegratedVip findByEmail(String name);
+    IntegratedVip findByVipId(Long vipId);
 }

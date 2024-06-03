@@ -119,23 +119,23 @@ public class OCRUtil {
 //        JSONObject biznum_obj = (JSONObject) fields.get(0);
 //        String biznum = (String)biznum_obj.get("inferText");
 
-        JSONObject bizname_obj = (JSONObject) fields.get(0);
-        String bizname = (String)bizname_obj.get("inferText");
+        JSONObject viplicense_obj = (JSONObject) fields.get(0);//면허번호
+        String viplicense = (String)viplicense_obj.get("inferText");
 
-        JSONObject bizowner_obj = (JSONObject) fields.get(1);
-        String bizowner = (String)bizowner_obj.get("inferText");
+        JSONObject vipname_obj = (JSONObject) fields.get(1);//이름
+        String vipname = (String)vipname_obj.get("inferText");
 
-        JSONObject bizdate_obj = (JSONObject) fields.get(2);
-        String bizdate = (String)bizdate_obj.get("inferText");
+        JSONObject vipbirth_obj = (JSONObject) fields.get(2);//주민번호
+        String vipbirth = (String)vipbirth_obj.get("inferText");
 
-        JSONObject bizadd_obj = (JSONObject) fields.get(3);
-        String bizadd = (String)bizadd_obj.get("inferText");
+        JSONObject vipaddress_obj = (JSONObject) fields.get(3);//주소
+        String vipaddress = (String)vipaddress_obj.get("inferText");
 
 //        map.put("biznum", biznum);
-        map.put("bizname", bizname);
-        map.put("bizowner", bizowner);
-        map.put("bizdate", bizdate);
-        map.put("bizadd", bizadd);
+        map.put("vipname", vipname);
+        map.put("vipbirth", vipbirth);
+        map.put("viplicense", viplicense);
+        map.put("vipaddress", vipaddress);
 
         return map;
     }
