@@ -5,10 +5,9 @@ import com.hana.dto.response.PbDto;
 import com.hana.dto.response.UsersDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pb")
@@ -39,7 +38,15 @@ public class PbController {
 
     @RequestMapping("/main/state")
     @ResponseBody
-    public PbDto getLoginState(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken){
-        return new PbDto(null, userService.getVipStateList(accessToken));
+    public PbDto getLoginState(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken, @RequestBody PbDto requestData){
+        return new PbDto(null, userService.getVipStateList(requestData.getVip()));
+    }
+
+    @RequestMapping("/main/filter")
+    @ResponseBody
+    public PbDto filter(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken, String riskType, String name){
+        List<PbDto.VipInfo> vipInfoList = userService.getVipListByFilter(accessToken, riskType, name);
+        List<PbDto.VipState> vipStateList = userService.getVipStateList(vipInfoList);
+        return new PbDto(vipInfoList, vipStateList);
     }
 }
