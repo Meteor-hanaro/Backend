@@ -18,6 +18,7 @@ public class IntegratedVip {
     Long userId;
     String email;
     String password;
+    Boolean isvip;
     String name;
     String phone;
     Long vipId;
@@ -31,6 +32,7 @@ public class IntegratedVip {
                 "userId=" + userId +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", isvip='" + isvip + '\'' +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", vipId=" + vipId +
