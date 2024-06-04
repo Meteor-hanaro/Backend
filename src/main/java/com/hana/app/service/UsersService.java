@@ -109,6 +109,7 @@ public class UsersService {
             PbDto.VipInfo temp = PbDto.VipInfo.builder()
                     .vipId(v.getVipId())
                     .name(v.getName())
+                    .email(v.getEmail())
                     .riskType(v.getRiskType())
                     .consultDate(getMaxStartedAt(v.getVipId()))
                     .build();
@@ -116,6 +117,53 @@ public class UsersService {
         }
 
         return vipList;
+    }
+
+    public List<PbDto.VipInfo> getVipListByFilter(String token, String riskType, String name){
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        IntegratedPb pb = integratedPbRepository.findByEmail(authentication.getName());
+
+        // pb 담당 vip 정보
+        List<IntegratedVip> result;
+        if("전체".equals(riskType)){
+            result = integratedVipRepository.findByPbIdAndName(pb.getPbId(), name);
+        }else{
+            result = integratedVipRepository.findByPbIdAndRiskTypeAndName(pb.getPbId(), riskType, name);
+        }
+
+        List<PbDto.VipInfo> vipList = new ArrayList<>();
+        for(IntegratedVip v: result){
+            PbDto.VipInfo temp = PbDto.VipInfo.builder()
+                    .vipId(v.getVipId())
+                    .name(v.getName())
+                    .email(v.getEmail())
+                    .riskType(v.getRiskType())
+                    .consultDate(getMaxStartedAt(v.getVipId()))
+                    .build();
+            vipList.add(temp);
+        }
+
+        return vipList;
+    }
+
+    public List<PbDto.VipState> getVipStateList(List<PbDto.VipInfo> vipInfoList) {
+        //Authentication authentication = jwtTokenProvider.getAuthentication(token);
+
+        // pb 담당 vip의 접속 여부 정보
+        List<PbDto.VipState> stateList = new ArrayList<>();
+        for(PbDto.VipInfo v: vipInfoList){
+            boolean state = true;
+            if (redisTemplate.opsForValue().get("RT:" + v.getEmail()) == null) {
+                state = false;
+            }
+
+            PbDto.VipState temp = PbDto.VipState.builder()
+                    .state(state)
+                    .build();
+            stateList.add(temp);
+        }
+
+        return stateList;
     }
 
     public List<PbDto.VipState> getVipStateList(String token) {
