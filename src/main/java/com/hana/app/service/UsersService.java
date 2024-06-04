@@ -96,7 +96,7 @@ public class UsersService {
         redisTemplate.opsForValue()
                 .set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
 
-        // 5. 이후 JwtAuthenticationFilter 에서 redis에 있는 logout 정보를 가지고 와서 접근을 거부함
+        // 5. 이후 JwtAuthenticationFilter 에서 redis에 있는 logout 정보를 가지고 와서 접근을 거부
     }
 
     public List<PbDto.VipInfo> getVipList(String token) {
