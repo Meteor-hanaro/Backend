@@ -1,6 +1,6 @@
 package com.hana.controller;
 
-import com.hana.app.service.UsersService;
+import com.hana.app.service.user.UsersService;
 import com.hana.dto.response.PbDto;
 import com.hana.dto.response.UsersDto;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +34,11 @@ public class PbController {
     @ResponseBody
     public PbDto info(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken) {
         return userService.getVipList(accessToken);
+    }
+
+    @RequestMapping("/main/state")
+    @ResponseBody
+    public PbDto getLoginState(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken){
+        return new PbDto(null, userService.getVipStateList(accessToken));
     }
 }

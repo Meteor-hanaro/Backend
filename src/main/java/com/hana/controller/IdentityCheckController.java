@@ -1,7 +1,7 @@
 package com.hana.controller;
 
 import com.hana.app.data.entity.IntegratedVip;
-import com.hana.app.service.UsersService;
+import com.hana.app.service.user.UsersService;
 import com.hana.util.OCRUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
