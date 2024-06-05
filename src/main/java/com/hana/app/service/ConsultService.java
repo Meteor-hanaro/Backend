@@ -6,6 +6,7 @@ import com.hana.app.repository.ConsultRepository;
 import com.hana.app.repository.PbRepository;
 import com.hana.app.repository.VipRepository;
 import com.hana.dto.request.ConsultRegisterDto;
+import com.hana.dto.response.ConsultSearchDto;
 import com.hana.dto.response.ConsultWebRTCRoomDto;
 import com.hana.exception.MeteorException;
 import com.hana.exception.NotFoundException;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +32,10 @@ public class ConsultService {
     public ConsultWebRTCRoomDto findActiveConsultByVipId(Long userId) {
         if (findActiveConsult(userId) == null) return null;
         return new ConsultWebRTCRoomDto(findActiveConsult(userId));
+    }
+
+    public ConsultSearchDto searchConsultIsExist(Long pbId) {
+        return new ConsultSearchDto(searchPbVipConsultIsExist(pbId));
     }
 
     private Consult makeConsult(ConsultRegisterDto consultRegisterDto) {
@@ -67,5 +73,19 @@ public class ConsultService {
         }
 
         return consult;
+    }
+
+    private List<ConsultWebRTCRoomDto> searchPbVipConsultIsExist(Long pbId) {
+        List<ConsultWebRTCRoomDto> list = new ArrayList<>();
+
+        try {
+            for (Long id : consultRepository.findByPbId(pbId)) {
+                if(findActiveConsult(id) != null) list.add(new ConsultWebRTCRoomDto(findActiveConsult(id)));
+            }
+        } catch (MeteorException e) {
+            throw new RuntimeException();
+        }
+
+        return list;
     }
 }

@@ -27,14 +27,17 @@ public class PbDto {
     public static class VipInfo {
         private Long vipId;
         private String name;
+        private String email;
         private String riskType;
         private String consultDate;
+        private Long pbId;
 
         @Override
         public String toString() {
             return "VipInfo{" +
-                    "vipId=" + vipId + '\'' +
+                    "vipId=" + vipId +
                     ", name='" + name + '\'' +
+                    ", email='" + email + '\'' +
                     ", riskType='" + riskType + '\'' +
                     ", consultDate='" + consultDate + '\'' +
                     '}';

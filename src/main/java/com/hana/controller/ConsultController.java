@@ -2,11 +2,14 @@ package com.hana.controller;
 
 import com.hana.app.service.ConsultService;
 import com.hana.dto.request.ConsultRegisterDto;
+import com.hana.dto.response.ConsultSearchDto;
 import com.hana.dto.response.ConsultWebRTCRoomDto;
 import com.hana.exception.MeteorException;
 import com.hana.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/consult")
@@ -36,5 +39,18 @@ public class ConsultController {
         }
 
         return consultWebRTCRoomDto;
+    }
+
+    @GetMapping("/searchPbVipConsult")
+    public ConsultSearchDto searchConsultExists(@RequestParam("pbId") Long pbId) {
+        ConsultSearchDto consultSearchDto = null;
+
+        try {
+            consultSearchDto = consultService.searchConsultIsExist(pbId);
+        } catch(MeteorException e) {
+            throw new NotFoundException(e.getErrorType());
+        }
+
+        return consultSearchDto;
     }
 }

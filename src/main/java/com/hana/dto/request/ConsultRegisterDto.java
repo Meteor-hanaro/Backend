@@ -9,5 +9,5 @@ public class ConsultRegisterDto {
     private Long vipId;
     private Long pbId;
     private String content;
-    private LocalDateTime startTime;
+    private final LocalDateTime startTime = LocalDateTime.now();
 }
