@@ -8,12 +8,10 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public class PbDto {
     private final List<VipInfo> vip;
-
-    public PbDto(List<VipInfo> vip) {
-        this.vip = vip;
-    }
+    private final List<VipState> state;
 
     @Override
     public String toString() {
@@ -28,19 +26,35 @@ public class PbDto {
     @AllArgsConstructor
     public static class VipInfo {
         private Long vipId;
-        private String status;
         private String name;
+        private String email;
         private String riskType;
         private String consultDate;
+        private Long pbId;
 
         @Override
         public String toString() {
             return "VipInfo{" +
                     "vipId=" + vipId +
-                    ", status='" + status + '\'' +
                     ", name='" + name + '\'' +
+                    ", email='" + email + '\'' +
                     ", riskType='" + riskType + '\'' +
                     ", consultDate='" + consultDate + '\'' +
+                    '}';
+        }
+    }
+
+    @Builder
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class VipState {
+        private boolean state;
+
+        @Override
+        public String toString() {
+            return "VipState{" +
+                    "state=" + state +
                     '}';
         }
     }
