@@ -1,4 +1,4 @@
-package com.hana.app.service;
+package com.hana.app.service.user;
 
 import com.hana.app.data.entity.VIP;
 import com.hana.app.repository.VipRepository;

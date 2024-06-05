@@ -30,6 +30,7 @@ public class PbDto {
         private String email;
         private String riskType;
         private String consultDate;
+        private Long pbId;
 
         @Override
         public String toString() {

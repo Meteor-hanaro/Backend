@@ -30,6 +30,7 @@ public class VipDto {
         private final Long vipId;
         private final String password;
         private final String name;
+        private final Boolean isvip;
         private final String riskType;
         private final String riskTestDate;
 

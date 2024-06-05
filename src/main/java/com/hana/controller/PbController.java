@@ -1,6 +1,8 @@
 package com.hana.controller;
 
-import com.hana.app.service.UsersService;
+import com.hana.app.service.user.PbService;
+import com.hana.app.service.user.UsersService;
+import com.hana.dto.request.PbPwdCheckDto;
 import com.hana.dto.response.PbDto;
 import com.hana.dto.response.UsersDto;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.List;
 public class PbController {
 
     private final UsersService userService;
+    private final PbService pbService;
 
     @RequestMapping("/login")
     @ResponseBody
@@ -35,7 +38,6 @@ public class PbController {
         return new PbDto(userService.getVipList(accessToken), userService.getVipStateList(accessToken));
     }
 
-
     @RequestMapping("/main/state")
     @ResponseBody
     public PbDto getLoginState(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken, @RequestBody PbDto requestData){
@@ -48,5 +50,10 @@ public class PbController {
         List<PbDto.VipInfo> vipInfoList = userService.getVipListByFilter(accessToken, riskType, name);
         List<PbDto.VipState> vipStateList = userService.getVipStateList(vipInfoList);
         return new PbDto(vipInfoList, vipStateList);
+    }
+
+    @PostMapping("/main/pwdcheck")
+    public Boolean isAuthenticated(@RequestBody PbPwdCheckDto pbPwdCheckDto) {
+        return pbService.isPbAuthenticated(pbPwdCheckDto);
     }
 }
