@@ -4,6 +4,7 @@ import com.hana.app.service.ConsultService;
 import com.hana.dto.request.ConsultRegisterDto;
 import com.hana.dto.response.ConsultSearchDto;
 import com.hana.dto.response.ConsultWebRTCRoomDto;
+import com.hana.exception.InternalServerException;
 import com.hana.exception.MeteorException;
 import com.hana.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class ConsultController {
         try {
             consultService.registerConsult(consultRegisterDto);
         } catch(MeteorException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new InternalServerException(e.getErrorType());
         }
     }
 
