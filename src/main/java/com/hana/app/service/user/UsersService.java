@@ -197,6 +197,7 @@ public class UsersService {
         IntegratedVip vip = integratedVipRepository.findByEmail(authentication.getName());
 
         // 1. vipInfo
+        vip.setIsvip(true);
         VipDto.VipInfo vipInfo = getVipInfo(vip);
 
         // 2. pbInfo
@@ -218,6 +219,7 @@ public class UsersService {
         return VipDto.VipInfo.builder()
                 .vipId(vip.getVipId())
                 .password(vip.getPassword())
+                .isvip(vip.getIsvip())
                 .name(vip.getName())
                 .riskType(vip.getRiskType())
                 .riskTestDate(localDateTime2String(vip.getTestedAt()))

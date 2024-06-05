@@ -1,13 +1,18 @@
 package com.hana.controller;
 
+import com.hana.app.service.user.PbService;
 import com.hana.app.service.user.UsersService;
+import com.hana.dto.request.PbPwdCheckDto;
 import com.hana.dto.response.PbDto;
 import com.hana.dto.response.UsersDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/pb")
@@ -16,6 +21,7 @@ import java.util.List;
 public class PbController {
 
     private final UsersService userService;
+    private final PbService pbService;
 
     @RequestMapping("/login")
     @ResponseBody
@@ -48,5 +54,10 @@ public class PbController {
         List<PbDto.VipInfo> vipInfoList = userService.getVipListByFilter(accessToken, riskType, name);
         List<PbDto.VipState> vipStateList = userService.getVipStateList(vipInfoList);
         return new PbDto(vipInfoList, vipStateList);
+    }
+
+    @PostMapping("/main/pwdcheck")
+    public Boolean isAuthenticated(@RequestBody PbPwdCheckDto pbPwdCheckDto) {
+        return pbService.isPbAuthenticated(pbPwdCheckDto);
     }
 }
