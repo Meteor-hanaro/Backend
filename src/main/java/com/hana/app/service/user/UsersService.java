@@ -112,7 +112,6 @@ public class UsersService {
                     .email(v.getEmail())
                     .riskType(v.getRiskType())
                     .consultDate(getMaxStartedAt(v.getVipId()))
-                    .pbId(v.getPbId())
                     .build();
             vipList.add(temp);
         }

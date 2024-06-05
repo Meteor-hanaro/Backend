@@ -7,12 +7,9 @@ import com.hana.dto.response.PbDto;
 import com.hana.dto.response.UsersDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/pb")
@@ -40,7 +37,6 @@ public class PbController {
     public PbDto info(@RequestHeader("accessToken") String accessToken, @RequestHeader("refreshToken") String refreshToken) {
         return new PbDto(userService.getVipList(accessToken), userService.getVipStateList(accessToken));
     }
-
 
     @RequestMapping("/main/state")
     @ResponseBody

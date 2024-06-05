@@ -18,5 +18,4 @@ public interface IntegratedVipRepository extends JpaRepository<IntegratedVip, Lo
 
     @Query("SELECT v FROM IntegratedVip v WHERE v.pbId = :pbId AND v.name LIKE %:name%")
     List<IntegratedVip> findByPbIdAndName(Long pbId, String name);
-
 }
