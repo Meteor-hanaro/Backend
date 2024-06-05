@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/contract")
 @RequiredArgsConstructor
+@Slf4j
 @Tag(name = "Contract", description = "Response Contract API")
 public class ContractController {
 
@@ -38,6 +40,13 @@ public class ContractController {
 	public List<FundContractsResponseDto> getFundContractsByIds(@RequestBody Map<String, List<Long>> request) {
 		List<Long> fundIds = request.get("fundIds");
 		return fundContractService.getFundJoinContractsByFundIds(fundIds);
+	}
+
+// FINAL 계약서 가져오는 코드
+	@PostMapping("/finalcontract")
+	public List<FundContractsResponseDto> getFinalFundContractsByIds(@RequestBody Map<String, List<Long>> request) {
+		List<Long> fundIds = request.get("fundIds");
+		return fundContractService.getFundFinalContractsByFundIds(fundIds);
 	}
 
 }
