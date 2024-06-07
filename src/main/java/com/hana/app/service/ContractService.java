@@ -1,6 +1,8 @@
 package com.hana.app.service;
 
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -28,10 +30,12 @@ import com.hana.external.aws.S3Service;
 import com.hana.response.ErrorType;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class ContractService {
 
 	private final ContractRepository contractRepository;
@@ -64,12 +68,14 @@ public class ContractService {
 	}
 
 	private void makeContracts(Pb pb, VIP vip, FinalContractRequestDto finalContractRequestDto) {
+
 		for (ContractRequestDto contractRequestDto : finalContractRequestDto.getContracts()) {
 			Fund fund = fundService.get(contractRequestDto.getFundId()).
 				orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND));
 
 			byte[] decodedBytes = Base64.getDecoder().decode(contractRequestDto.getSignedContract());
 			byte[] encryptedBytes = encrypt(decodedBytes);
+
 			String signedContractPdfUrl = s3Service.uploadPdfInByte(encryptedBytes, "signed");
 
 			Contract contract = Contract.builder()
@@ -93,12 +99,20 @@ public class ContractService {
 
 	private byte[] encrypt(byte[] data) {
 		try {
-			SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+			SecretKeySpec secretKey = generateKey(key);
 			Cipher cipher = Cipher.getInstance("AES");
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 			return cipher.doFinal(data);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			throw new InternalServerException(ErrorType.INTERNAL_SERVER);
 		}
+	}
+
+	private SecretKeySpec generateKey(String key) throws Exception {
+		MessageDigest sha = MessageDigest.getInstance("SHA-256");
+		byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
+		keyBytes = sha.digest(keyBytes);
+		return new SecretKeySpec(Arrays.copyOf(keyBytes, 16), "AES");
 	}
 }
