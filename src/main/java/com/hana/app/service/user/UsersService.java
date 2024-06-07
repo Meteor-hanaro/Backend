@@ -1,5 +1,6 @@
-package com.hana.app.service;
+package com.hana.app.service.user;
 
+import com.hana.app.data.entity.BaseEntity;
 import com.hana.app.data.entity.Consult;
 import com.hana.app.data.entity.IntegratedPb;
 import com.hana.app.data.entity.IntegratedVip;
@@ -96,7 +97,7 @@ public class UsersService {
         redisTemplate.opsForValue()
                 .set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
 
-        // 5. 이후 JwtAuthenticationFilter 에서 redis에 있는 logout 정보를 가지고 와서 접근을 거부함
+        // 5. 이후 JwtAuthenticationFilter 에서 redis에 있는 logout 정보를 가지고 와서 접근을 거부
     }
 
     public List<PbDto.VipInfo> getVipList(String token) {
@@ -109,6 +110,35 @@ public class UsersService {
             PbDto.VipInfo temp = PbDto.VipInfo.builder()
                     .vipId(v.getVipId())
                     .name(v.getName())
+                    .email(v.getEmail())
+                    .riskType(v.getRiskType())
+                    .consultDate(getMaxStartedAt(v.getVipId()))
+                    .pbId(v.getPbId())
+                    .build();
+            vipList.add(temp);
+        }
+
+        return vipList;
+    }
+
+    public List<PbDto.VipInfo> getVipListByFilter(String token, String riskType, String name){
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        IntegratedPb pb = integratedPbRepository.findByEmail(authentication.getName());
+
+        // pb 담당 vip 정보
+        List<IntegratedVip> result;
+        if("전체".equals(riskType)){
+            result = integratedVipRepository.findByPbIdAndName(pb.getPbId(), name);
+        }else{
+            result = integratedVipRepository.findByPbIdAndRiskTypeAndName(pb.getPbId(), riskType, name);
+        }
+
+        List<PbDto.VipInfo> vipList = new ArrayList<>();
+        for(IntegratedVip v: result){
+            PbDto.VipInfo temp = PbDto.VipInfo.builder()
+                    .vipId(v.getVipId())
+                    .name(v.getName())
+                    .email(v.getEmail())
                     .riskType(v.getRiskType())
                     .consultDate(getMaxStartedAt(v.getVipId()))
                     .build();
@@ -116,6 +146,26 @@ public class UsersService {
         }
 
         return vipList;
+    }
+
+    public List<PbDto.VipState> getVipStateList(List<PbDto.VipInfo> vipInfoList) {
+        //Authentication authentication = jwtTokenProvider.getAuthentication(token);
+
+        // pb 담당 vip의 접속 여부 정보
+        List<PbDto.VipState> stateList = new ArrayList<>();
+        for(PbDto.VipInfo v: vipInfoList){
+            boolean state = true;
+            if (redisTemplate.opsForValue().get("RT:" + v.getEmail()) == null) {
+                state = false;
+            }
+
+            PbDto.VipState temp = PbDto.VipState.builder()
+                    .state(state)
+                    .build();
+            stateList.add(temp);
+        }
+
+        return stateList;
     }
 
     public List<PbDto.VipState> getVipStateList(String token) {
@@ -148,6 +198,7 @@ public class UsersService {
         IntegratedVip vip = integratedVipRepository.findByEmail(authentication.getName());
 
         // 1. vipInfo
+        vip.setIsvip(true);
         VipDto.VipInfo vipInfo = getVipInfo(vip);
 
         // 2. pbInfo
@@ -165,13 +216,20 @@ public class UsersService {
     }
 
     public VipDto.VipInfo getVipInfo(IntegratedVip vip) {
+        Long vipId = vip.getVipId();
+        boolean hasConsult = true;
+        if(consultRepository.findByVipIdAndPbIdAndStatus(vipId, vip.getPbId(), BaseEntity.BaseState.ACTIVE) == null){
+            hasConsult = false;
+        };
 
         return VipDto.VipInfo.builder()
-                .vipId(vip.getVipId())
+                .vipId(vipId)
                 .password(vip.getPassword())
+                .isvip(vip.getIsvip())
                 .name(vip.getName())
                 .riskType(vip.getRiskType())
                 .riskTestDate(localDateTime2String(vip.getTestedAt()))
+                .hasConsult(hasConsult)
                 .build();
     }
 

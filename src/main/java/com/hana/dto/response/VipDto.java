@@ -30,8 +30,10 @@ public class VipDto {
         private final Long vipId;
         private final String password;
         private final String name;
+        private final Boolean isvip;
         private final String riskType;
         private final String riskTestDate;
+        private final boolean hasConsult;
 
         @Override
         public String toString() {
@@ -39,8 +41,10 @@ public class VipDto {
                     "vipId=" + vipId +
                     ", password='" + password + '\'' +
                     ", name='" + name + '\'' +
+                    ", isvip=" + isvip +
                     ", riskType='" + riskType + '\'' +
                     ", riskTestDate='" + riskTestDate + '\'' +
+                    ", hasConsult=" + hasConsult +
                     '}';
         }
     }

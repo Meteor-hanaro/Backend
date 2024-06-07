@@ -22,6 +22,7 @@ import com.hana.app.data.entity.portfolio.PortfolioItem;
 import com.hana.app.data.entity.suggestion.SuggestionItem;
 import com.hana.app.repository.ContractRepository;
 import com.hana.app.service.fund.FundService;
+import com.hana.app.service.user.VipService;
 import com.hana.dto.request.ContractRequestDto;
 import com.hana.dto.request.FinalContractRequestDto;
 import com.hana.exception.InternalServerException;

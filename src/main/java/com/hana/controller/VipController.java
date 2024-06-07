@@ -1,7 +1,7 @@
 package com.hana.controller;
 
-import com.hana.app.service.UsersService;
-import com.hana.app.service.VipService;
+import com.hana.app.service.user.UsersService;
+import com.hana.app.service.user.VipService;
 import com.hana.dto.response.UsersDto;
 import com.hana.dto.response.VipDto;
 import lombok.RequiredArgsConstructor;
