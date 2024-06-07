@@ -120,4 +120,9 @@ public class PortfolioService {
     public Portfolio findByPortfolioByVipId(Long vipId) {
         return portfolioRepository.findPortfolioByVipId(vipId);
     }
+
+    @Transactional
+    public void savePortfolioItems(List<PortfolioItem> portfolioItems) {
+        portfolioItemRepository.saveAll(portfolioItems);
+    }
 }
