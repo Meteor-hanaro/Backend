@@ -1,6 +1,7 @@
 package com.hana.app.service;
 
 import com.hana.app.data.entity.portfolio.Portfolio;
+import com.hana.app.data.entity.portfolio.PortfolioItem;
 import com.hana.app.data.entity.suggestion.Suggestion;
 import com.hana.app.data.entity.suggestion.SuggestionItem;
 import com.hana.app.repository.portfolio.PortfolioRepository;
@@ -17,7 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -75,7 +77,7 @@ public class SuggestionService {
                     suggestionItemCompositionDtoList.add(SuggestionItemCompositionDto.from(si));
                 }
 
-                suggestionItemDtos.add(SuggestionItemDto.from(suggestion,suggestionItemCompositionDtoList));
+                suggestionItemDtos.add(SuggestionItemDto.from(suggestion, suggestionItemCompositionDtoList));
             } catch (MeteorException e) {
                 throw new NotFoundException(ErrorType.NOT_FOUND);
             }
@@ -90,16 +92,21 @@ public class SuggestionService {
     }
 
     @Transactional
-	public void deleteAllSuggestion(Portfolio portfolio) {
+    public void deleteAllSuggestion(Portfolio portfolio) {
         List<Suggestion> suggestions = suggestionRepository.findAllByPortfolioId(portfolio.getId());
-        suggestions.stream().forEach(suggestion ->
-            suggestionItemRepository.deleteAllBySuggestionId(suggestion.getId()));
+        suggestions.stream().forEach(suggestion -> suggestionItemRepository.deleteAllBySuggestionId(suggestion.getId()));
 
         suggestionRepository.deleteAll(suggestions);
-	}
+    }
 
     public Suggestion addSuggestion(Portfolio portfolio) {
         Suggestion suggestion = new Suggestion(portfolio, "");
         return suggestionRepository.save(suggestion);
     }
+
+    public SuggestionItem addSuggestionItem(Suggestion suggestion, PortfolioItem portfolioItem) {
+        SuggestionItem suggestionItem = new SuggestionItem(portfolioItem.getStartAmount(), portfolioItem.getFund(), suggestion);
+        return suggestionItemRepository.save(suggestionItem);
+    }
+
 }
