@@ -117,4 +117,7 @@ public class PortfolioService {
         portfolioItems.stream().forEach(portfolioItem -> portfolioItem.makeInactive());
     }
 
+    public Portfolio findByPortfolioByVipId(Long vipId) {
+        return portfolioRepository.findPortfolioByVipId(vipId);
+    }
 }
