@@ -33,4 +33,8 @@ public class BaseEntity {
     public BaseEntity() {
         this.status = BaseState.ACTIVE;
     }
+
+    public void makeInactive() {
+        this.status = BaseState.INACTIVE;
+    }
 }
