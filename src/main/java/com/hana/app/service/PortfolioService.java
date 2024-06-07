@@ -15,10 +15,12 @@ import com.hana.response.ErrorType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -108,4 +110,11 @@ public class PortfolioService {
 
         return PortfolioGraphDto.from(fundName, new_serial_date, new_serial_value);
     }
+
+    @Transactional
+    public void makePortfolioItemInactive(Long portfolioId) {
+        List<PortfolioItem> portfolioItems = portfolioItemRepository.findAllByPortfolioId(portfolioId);
+        portfolioItems.stream().forEach(portfolioItem -> portfolioItem.makeInactive());
+    }
+
 }
