@@ -10,4 +10,8 @@ import java.util.List;
 @Repository
 public interface SuggestionItemRepository extends JpaRepository<SuggestionItem, Long> {
     List<SuggestionItem> findAllBySuggestion(Suggestion suggestion);
+
+    List<SuggestionItem> findAllBySuggestionId(Long suggestionId);
+
+	void deleteAllBySuggestionId(Long suggestionId);
 }

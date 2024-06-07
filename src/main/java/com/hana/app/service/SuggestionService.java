@@ -1,5 +1,6 @@
 package com.hana.app.service;
 
+import com.hana.app.data.entity.portfolio.Portfolio;
 import com.hana.app.data.entity.suggestion.Suggestion;
 import com.hana.app.data.entity.suggestion.SuggestionItem;
 import com.hana.app.repository.portfolio.PortfolioRepository;
@@ -14,6 +15,7 @@ import com.hana.response.ErrorType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -82,4 +84,17 @@ public class SuggestionService {
 
         return new SuggestionDto(suggestions.get(0), suggestionItemDtos);
     }
+
+    public List<SuggestionItem> getSuggestionItems(Long suggestionId) {
+        return suggestionItemRepository.findAllBySuggestionId(suggestionId);
+    }
+
+    @Transactional
+	public void deleteAllSuggestion(Portfolio portfolio) {
+        List<Suggestion> suggestions = suggestionRepository.findAllByPortfolioId(portfolio.getId());
+        suggestions.stream().forEach(suggestion ->
+            suggestionItemRepository.deleteAllBySuggestionId(suggestion.getId()));
+
+        suggestionRepository.deleteAll(suggestions);
+	}
 }
