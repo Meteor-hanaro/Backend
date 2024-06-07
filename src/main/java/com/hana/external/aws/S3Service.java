@@ -2,6 +2,7 @@ package com.hana.external.aws;
 
 import static com.hana.response.ErrorType.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
@@ -32,6 +33,20 @@ public class S3Service {
 		metadata.setContentLength(multipartFile.getSize());
 
 		try(InputStream inputStream = multipartFile.getInputStream()) {
+			amazonS3.putObject(new PutObjectRequest(bucket+"/"+ folder + "/pdf", fileName, inputStream, metadata));
+			return amazonS3.getUrl(bucket+"/"+ folder + "/pdf", fileName).toString();
+		} catch(IOException e) {
+			throw new InternalServerException(INTERNAL_SERVER);
+		}
+	}
+
+	public String uploadPdfInByte(byte[] data, String folder) {
+		String fileName = UUID.randomUUID().toString() + ".pdf";
+		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentType("application/pdf");
+		metadata.setContentLength(data.length);
+
+		try (ByteArrayInputStream inputStream = new ByteArrayInputStream(data)) {
 			amazonS3.putObject(new PutObjectRequest(bucket+"/"+ folder + "/pdf", fileName, inputStream, metadata));
 			return amazonS3.getUrl(bucket+"/"+ folder + "/pdf", fileName).toString();
 		} catch(IOException e) {
