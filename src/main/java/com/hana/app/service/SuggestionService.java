@@ -97,4 +97,9 @@ public class SuggestionService {
 
         suggestionRepository.deleteAll(suggestions);
 	}
+
+    public Suggestion addSuggestion(Portfolio portfolio) {
+        Suggestion suggestion = new Suggestion(portfolio, "");
+        return suggestionRepository.save(suggestion);
+    }
 }
