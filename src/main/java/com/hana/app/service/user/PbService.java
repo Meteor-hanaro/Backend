@@ -1,8 +1,12 @@
 package com.hana.app.service.user;
 
+import com.hana.app.data.entity.Pb;
 import com.hana.app.repository.PbRepository;
 import com.hana.app.repository.UsersRepository;
 import com.hana.dto.request.PbPwdCheckDto;
+import com.hana.exception.NotFoundException;
+import com.hana.response.ErrorType;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,5 +32,10 @@ public class PbService {
         }else{
             return false;
         }
+    }
+
+    public Pb findByPbId(Long pbId) {
+        Pb pb = pbRepository.findById(pbId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND));
+        return pb;
     }
 }
