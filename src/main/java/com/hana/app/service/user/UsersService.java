@@ -1,5 +1,6 @@
 package com.hana.app.service.user;
 
+import com.hana.app.data.entity.BaseEntity;
 import com.hana.app.data.entity.Consult;
 import com.hana.app.data.entity.IntegratedPb;
 import com.hana.app.data.entity.IntegratedVip;
@@ -215,14 +216,20 @@ public class UsersService {
     }
 
     public VipDto.VipInfo getVipInfo(IntegratedVip vip) {
+        Long vipId = vip.getVipId();
+        boolean hasConsult = true;
+        if(consultRepository.findByVipIdAndPbIdAndStatus(vipId, vip.getPbId(), BaseEntity.BaseState.ACTIVE) == null){
+            hasConsult = false;
+        };
 
         return VipDto.VipInfo.builder()
-                .vipId(vip.getVipId())
+                .vipId(vipId)
                 .password(vip.getPassword())
                 .isvip(vip.getIsvip())
                 .name(vip.getName())
                 .riskType(vip.getRiskType())
                 .riskTestDate(localDateTime2String(vip.getTestedAt()))
+                .hasConsult(hasConsult)
                 .build();
     }
 
