@@ -2,6 +2,7 @@ package com.hana.controller;
 
 import com.hana.app.service.ConsultService;
 import com.hana.dto.request.ConsultRegisterDto;
+import com.hana.dto.response.ConsultAdminDto;
 import com.hana.dto.response.ConsultSearchDto;
 import com.hana.dto.response.ConsultWebRTCRoomDto;
 import com.hana.exception.InternalServerException;
@@ -53,5 +54,10 @@ public class ConsultController {
         }
 
         return consultSearchDto;
+    }
+
+    @GetMapping("/admin/allConsultInfo")
+    public ConsultAdminDto extractAllConsultInfo() {
+        return consultService.extractAdminConsultData();
     }
 }
