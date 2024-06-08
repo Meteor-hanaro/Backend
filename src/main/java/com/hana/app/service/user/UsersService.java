@@ -1,9 +1,6 @@
 package com.hana.app.service.user;
 
-import com.hana.app.data.entity.BaseEntity;
-import com.hana.app.data.entity.Consult;
-import com.hana.app.data.entity.IntegratedPb;
-import com.hana.app.data.entity.IntegratedVip;
+import com.hana.app.data.entity.*;
 import com.hana.app.repository.ConsultRepository;
 import com.hana.app.repository.IntegratedPbRepository;
 import com.hana.app.repository.IntegratedVipRepository;
@@ -44,9 +41,14 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final ConsultRepository consultRepository;
 
-    public UsersDto.TokenInfo login(String email, String password) {
+    public UsersDto.TokenInfo login(boolean isVip, String email, String password) {
+        Users user = usersRepository.findByEmail(email);
 
-        if (usersRepository.findByEmail(email) == null) {
+        if (user == null) {
+            throw new NotFoundException(ErrorType.NOT_FOUND);
+        }
+
+        if(user.is_vip() != isVip){
             throw new NotFoundException(ErrorType.NOT_FOUND);
         }
 
