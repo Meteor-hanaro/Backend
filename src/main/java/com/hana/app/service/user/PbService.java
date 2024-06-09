@@ -1,8 +1,8 @@
 package com.hana.app.service.user;
 
 import com.hana.app.data.entity.Pb;
-import com.hana.app.repository.PbRepository;
-import com.hana.app.repository.UsersRepository;
+import com.hana.app.repository.user.PbRepository;
+import com.hana.app.repository.user.UsersRepository;
 import com.hana.dto.request.PbPwdCheckDto;
 import com.hana.exception.NotFoundException;
 import com.hana.response.ErrorType;

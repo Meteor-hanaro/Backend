@@ -2,16 +2,14 @@ package com.hana.controller;
 
 import com.hana.app.service.ConsultService;
 import com.hana.dto.request.ConsultRegisterDto;
-import com.hana.dto.response.ConsultAdminDto;
-import com.hana.dto.response.ConsultSearchDto;
-import com.hana.dto.response.ConsultWebRTCRoomDto;
+import com.hana.dto.response.consult.ConsultAdminDto;
+import com.hana.dto.response.consult.ConsultSearchDto;
+import com.hana.dto.response.consult.ConsultWebRTCRoomDto;
 import com.hana.exception.InternalServerException;
 import com.hana.exception.MeteorException;
 import com.hana.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/consult")
