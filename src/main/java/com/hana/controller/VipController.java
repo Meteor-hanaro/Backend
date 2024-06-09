@@ -23,7 +23,7 @@ public class VipController {
     @RequestMapping("/login")
     @ResponseBody
     public UsersDto.TokenInfo login(String email, String password) {
-        return userService.login(email, password);
+        return userService.login(true, email, password);
     }
 
     @RequestMapping("/logout")
