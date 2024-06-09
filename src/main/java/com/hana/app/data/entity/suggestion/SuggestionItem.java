@@ -27,4 +27,10 @@ public class SuggestionItem extends BaseEntity {
 
     @Column(nullable = false, name = "fund_value")
     private Long fundValue;
+
+    public SuggestionItem(Long fundValue, Fund fund, Suggestion suggestion) {
+        this.fundValue = fundValue;
+        this.fund = fund;
+        this.suggestion = suggestion;
+    }
 }
