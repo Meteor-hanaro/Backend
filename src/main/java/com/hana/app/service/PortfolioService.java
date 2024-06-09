@@ -31,6 +31,10 @@ public class PortfolioService {
     final PortfolioItemRepository portfolioItemRepository;
     final UsersRepository usersRepository;
 
+    public Portfolio getPortfolioEntityByVipId(Long vipId) {
+        return portfolioRepository.findPortfolioByVipId(vipId);
+    }
+
     //    PortfolioItemResponseDto에 담아서 portfolio view에 보이기.
     public PortfolioDto getPortfolioByVipId(Long vipId) {
         PortfolioDto portfolioDto = null;

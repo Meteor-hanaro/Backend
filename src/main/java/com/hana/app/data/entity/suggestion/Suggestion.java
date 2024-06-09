@@ -24,4 +24,9 @@ public class Suggestion extends BaseEntity {
 
     @Column(nullable = false, name = "suggestion_name")
     private String name;
+
+    public Suggestion(Portfolio portfolio, String name) {
+        this.portfolio = portfolio;
+        this.name = name;
+    }
 }
