@@ -105,5 +105,11 @@ public class SuggestionController {
             suggestionService.updateSuggestionItemById(suggestionItem.getId(), suggestionApplyRequestItemDto.getNewValue());
         });
     }
+
+    @RequestMapping("/remove")
+    public void removeSuggestion(@RequestParam("suggestion_id") Long suggestionId) {
+        log.info("Remove suggestionId: {}", suggestionId);
+        suggestionService.removeSuggestionBySuggestionId(suggestionId);
+    }
 }
 
