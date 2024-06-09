@@ -124,6 +124,11 @@ public class SuggestionService {
     }
 
     @Transactional
+    public int updateSuggestionNameById(Long suggestionId, String newName) {
+        return suggestionRepository.updateSuggestionNameById(suggestionId, newName);
+    }
+
+    @Transactional
     public void removeSuggestionBySuggestionId(Long suggestionId) {
         suggestionItemRepository.deleteAllBySuggestionId(suggestionId);
         suggestionRepository.removeSuggestionById(suggestionId);

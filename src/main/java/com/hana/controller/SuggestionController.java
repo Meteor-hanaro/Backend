@@ -98,6 +98,9 @@ public class SuggestionController {
 
     @RequestMapping("/apply")
     public void applySuggestion(@RequestBody SuggestionApplyRequestDto suggestionApplyRequestDto) {
+        Long suggestionId = suggestionApplyRequestDto.getSuggestionId();
+        String suggestionName = suggestionApplyRequestDto.getSuggestionName();
+        suggestionService.updateSuggestionNameById(suggestionId, suggestionName);
 
         List<SuggestionApplyRequestItemDto> suggestionApplyRequestItemDtoList = suggestionApplyRequestDto.getSuggestionApplyRequestItemDtoList();
         suggestionApplyRequestItemDtoList.forEach(suggestionApplyRequestItemDto -> {
