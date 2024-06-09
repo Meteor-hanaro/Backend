@@ -1,5 +1,6 @@
 package com.hana.app.service;
 
+import com.hana.app.data.entity.VIP;
 import com.hana.app.data.entity.portfolio.Portfolio;
 import com.hana.app.data.entity.portfolio.PortfolioItem;
 import com.hana.app.data.entity.suggestion.Suggestion;
@@ -107,6 +108,19 @@ public class SuggestionService {
     public SuggestionItem addSuggestionItem(Suggestion suggestion, PortfolioItem portfolioItem) {
         SuggestionItem suggestionItem = new SuggestionItem(portfolioItem.getStartAmount(), portfolioItem.getFund(), suggestion);
         return suggestionItemRepository.save(suggestionItem);
+    }
+
+    public VIP getVipBySuggestionId(Long suggestionId) {
+        return suggestionRepository.findById(suggestionId).get().getPortfolio().getVip();
+    }
+
+    public SuggestionItem getSuggestionItemById(Long suggestionItemId) {
+        return suggestionItemRepository.findById(suggestionItemId).get();
+    }
+
+    @Transactional
+    public int updateSuggestionItemById(Long suggestionItemId, Long newValue) {
+        return suggestionItemRepository.updateFundValueById(suggestionItemId, newValue);
     }
 
 }
