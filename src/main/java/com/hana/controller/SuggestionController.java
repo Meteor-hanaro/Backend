@@ -79,10 +79,7 @@ public class SuggestionController {
 
         List<SuggestionItem> suggestionItems = suggestionService.getSuggestionItems(suggestionId);
         portfolioItems.forEach((portfolioItemDto -> {
-            SuggestionItem matchingSuggestionItem = suggestionItems.stream()
-                    .filter(suggestionItem -> suggestionItem.getFund().getId().equals(portfolioItemDto.getFundId()))
-                    .findFirst()
-                    .orElse(null);
+            SuggestionItem matchingSuggestionItem = suggestionItems.stream().filter(suggestionItem -> suggestionItem.getFund().getId().equals(portfolioItemDto.getFundId())).findFirst().orElse(null);
 
             assert matchingSuggestionItem != null;
             Long suggestionItemId = matchingSuggestionItem.getId();
@@ -103,12 +100,10 @@ public class SuggestionController {
     public void applySuggestion(@RequestBody SuggestionApplyRequestDto suggestionApplyRequestDto) {
 
         List<SuggestionApplyRequestItemDto> suggestionApplyRequestItemDtoList = suggestionApplyRequestDto.getSuggestionApplyRequestItemDtoList();
-        suggestionApplyRequestDto.getSuggestionApplyRequestItemDtoList().forEach(
-                suggestionApplyRequestItemDto -> {
-                    SuggestionItem suggestionItem = suggestionService.getSuggestionItemById(suggestionApplyRequestItemDto.getSuggestionItemId());
-                    suggestionService.updateSuggestionItemById(suggestionItem.getId(), suggestionApplyRequestItemDto.getNewValue());
-                }
-        );
+        suggestionApplyRequestItemDtoList.forEach(suggestionApplyRequestItemDto -> {
+            SuggestionItem suggestionItem = suggestionService.getSuggestionItemById(suggestionApplyRequestItemDto.getSuggestionItemId());
+            suggestionService.updateSuggestionItemById(suggestionItem.getId(), suggestionApplyRequestItemDto.getNewValue());
+        });
     }
 }
 
