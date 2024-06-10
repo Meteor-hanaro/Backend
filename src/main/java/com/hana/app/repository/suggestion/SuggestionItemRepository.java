@@ -25,4 +25,6 @@ public interface SuggestionItemRepository extends JpaRepository<SuggestionItem, 
     int updateFundValueById(@Param("suggestionItemId") Long suggestionItemId, @Param("fundValue") Long fundValue);
 
     SuggestionItem findSuggestionItemById(Long suggestionItemId);
+
+    void deleteSuggestionItemById(Long suggestionItemId);
 }

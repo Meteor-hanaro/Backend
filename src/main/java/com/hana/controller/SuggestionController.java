@@ -127,5 +127,10 @@ public class SuggestionController {
     public void addFundToSuggestion(@RequestBody AddFundToSuggestionRequestDto addFundToSuggestionRequestDto) {
         suggestionService.addFundToSuggestion(addFundToSuggestionRequestDto);
     }
+
+    @RequestMapping("/fund/remove")
+    public void removeFundFromSuggestion(@RequestParam("suggestion_item_id") Long suggestion_item_id) {
+        suggestionService.removeSuggestionItem(suggestion_item_id);
+    }
 }
 

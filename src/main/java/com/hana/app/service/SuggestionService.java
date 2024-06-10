@@ -194,4 +194,9 @@ public class SuggestionService {
         return prices.stream().mapToLong(i -> i).sum();
 
     }
+
+    @Transactional
+    public void removeSuggestionItem(Long suggestionItemId) {
+        suggestionItemRepository.deleteSuggestionItemById(suggestionItemId);
+    }
 }
