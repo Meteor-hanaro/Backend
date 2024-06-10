@@ -6,6 +6,7 @@ import com.hana.app.repository.ConsultRepository;
 import com.hana.app.repository.user.PbRepository;
 import com.hana.app.repository.user.VipRepository;
 import com.hana.dto.request.ConsultRegisterDto;
+import com.hana.dto.response.ConsultResponseDto;
 import com.hana.dto.response.consult.ConsultAdminDto;
 import com.hana.dto.response.consult.ConsultAdminItemDto;
 import com.hana.dto.response.consult.ConsultSearchDto;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +28,22 @@ public class ConsultService {
     final ConsultRepository consultRepository;
     final VipRepository vipRepository;
     final PbRepository pbRepository;
+
+    public void closeConsult(Long consultId) {
+        Optional<Consult> consultOptional = consultRepository.findById(consultId);
+        Consult consult = consultOptional.get();
+        consult.setStatus(BaseEntity.BaseState.INACTIVE);
+        consultRepository.save(consult);
+    }
+
+    public void writeConsult(ConsultResponseDto consultResponseDto) {
+        Long consultId = consultResponseDto.getConsultId();
+        String content = consultResponseDto.getContent();
+        Optional<Consult> consultOptional = consultRepository.findById(consultId);
+        Consult consult = consultOptional.get();
+        consult.setContent(content);
+        consultRepository.save(consult);
+    }
 
     public void registerConsult(ConsultRegisterDto consultRegisterDto) {
         consultRepository.save(makeConsult(consultRegisterDto));
