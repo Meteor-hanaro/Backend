@@ -1,7 +1,7 @@
 package com.hana.controller;
 
-import com.hana.app.service.SecurityService;
-import com.hana.dto.response.SecurityDto;
+import com.hana.app.service.security.SecurityService;
+import com.hana.dto.response.security.SecurityDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

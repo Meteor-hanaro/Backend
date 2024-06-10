@@ -2,10 +2,8 @@ package com.hana.controller;
 
 import com.hana.app.service.ConsultService;
 import com.hana.dto.request.ConsultRegisterDto;
-import com.hana.dto.response.ConsultAdminDto;
 import com.hana.dto.response.ConsultResponseDto;
-import com.hana.dto.response.ConsultSearchDto;
-import com.hana.dto.response.ConsultWebRTCRoomDto;
+import com.hana.dto.response.consult.*;
 import com.hana.exception.InternalServerException;
 import com.hana.exception.MeteorException;
 import com.hana.exception.NotFoundException;

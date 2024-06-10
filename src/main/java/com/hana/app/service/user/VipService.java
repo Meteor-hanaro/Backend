@@ -1,7 +1,7 @@
 package com.hana.app.service.user;
 
 import com.hana.app.data.entity.VIP;
-import com.hana.app.repository.VipRepository;
+import com.hana.app.repository.user.VipRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

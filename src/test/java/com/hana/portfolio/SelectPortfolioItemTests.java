@@ -1,7 +1,7 @@
 package com.hana.portfolio;
 
 import com.hana.app.data.entity.portfolio.PortfolioItem;
-import com.hana.app.service.PortfolioItemService;
+import com.hana.app.service.portfolio.PortfolioItemService;
 import com.hana.dto.response.PurchaseCompositionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

@@ -2,8 +2,8 @@ package com.hana.controller;
 
 import com.hana.app.service.user.UsersService;
 import com.hana.app.service.user.VipService;
-import com.hana.dto.response.UsersDto;
-import com.hana.dto.response.VipDto;
+import com.hana.dto.response.user.UsersDto;
+import com.hana.dto.response.user.VipDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
