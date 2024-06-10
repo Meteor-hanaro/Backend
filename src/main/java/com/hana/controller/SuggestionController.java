@@ -8,9 +8,9 @@ import com.hana.app.data.entity.suggestion.SuggestionItem;
 import com.hana.app.service.PortfolioItemService;
 import com.hana.app.service.PortfolioService;
 import com.hana.app.service.SuggestionService;
+import com.hana.dto.request.AddFundToSuggestionRequestDto;
 import com.hana.dto.request.SuggestionApplyRequestDto;
 import com.hana.dto.request.SuggestionApplyRequestItemDto;
-import com.hana.dto.response.PortfolioItemDto;
 import com.hana.dto.response.SuggestionDto;
 import com.hana.dto.response.SuggestionItemObtainDto;
 import com.hana.dto.response.SuggestionObtainDto;
@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api/suggestion")
@@ -65,6 +66,13 @@ public class SuggestionController {
 
     }
 
+    public static LocalDateTime getRandomDate(LocalDateTime startDate, LocalDateTime endDate) {
+        long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+        Random random = new Random();
+        long randomDays = random.nextLong(daysBetween + 1); // +1 to include end date
+        return startDate.plusDays(randomDays);
+    }
+
     @RequestMapping("/obtain")
     public SuggestionObtainDto obtainSuggestion(@RequestParam("suggestion_id") Long suggestionId) {
         log.info("suggestionId: {}", suggestionId);
@@ -75,23 +83,23 @@ public class SuggestionController {
 
         Long vipId = vip.getId();
         String vipName = vip.getUser().getName();
-        List<PortfolioItemDto> portfolioItems = portfolioService.getPortfolioByVipId(vipId).getPortfolioItems();
+
 
         List<SuggestionItem> suggestionItems = suggestionService.getSuggestionItems(suggestionId);
-        portfolioItems.forEach((portfolioItemDto -> {
-            SuggestionItem matchingSuggestionItem = suggestionItems.stream().filter(suggestionItem -> suggestionItem.getFund().getId().equals(portfolioItemDto.getFundId())).findFirst().orElse(null);
 
-            assert matchingSuggestionItem != null;
-            Long suggestionItemId = matchingSuggestionItem.getId();
+        suggestionItems.forEach((suggestionItem) -> {
+            Long suggestionItemId = suggestionItem.getId();
+            String fundName = suggestionItem.getFund().getName();
+            LocalDateTime startDate = LocalDateTime.of(2020, 5, 16, 0, 0);
+            LocalDateTime endDate = LocalDateTime.of(2024, 5, 1, 0, 0);
 
-            String fundName = portfolioItemDto.getFundName();
-            LocalDateTime fundInitDate = portfolioItemDto.getCreatedAt().truncatedTo(ChronoUnit.DAYS);
-            Long fundInitValue = portfolioItemDto.getStartAmount();
-            Long fundCurrentValue = portfolioItemService.getCurrentValue(portfolioItemDto.getItemId());
-            log.info("suggestionItemId: {}, fundName: {}, fundInitDate: {}, fundInitValue: {}, fundCurrentvalue: {}", suggestionItemId, fundName, fundInitDate, fundInitValue, fundCurrentValue);
+            LocalDateTime fundInitDate = getRandomDate(startDate, endDate);
+            Long fundInitValue = suggestionItem.getFundValue();
+            Long fundCurrentValue = suggestionService.calcCurSuggestionValue(suggestionItemId, fundInitValue, fundInitDate);
             SuggestionItemObtainDto suggestionItemObtainDto = new SuggestionItemObtainDto(suggestionItemId, fundName, fundInitDate, fundInitValue, fundCurrentValue);
             suggestionItemObtainDtos.add(suggestionItemObtainDto);
-        }));
+        });
+
         log.info(vipName);
         return new SuggestionObtainDto(vipName, suggestionItemObtainDtos);
     }
@@ -113,6 +121,11 @@ public class SuggestionController {
     public void removeSuggestion(@RequestParam("suggestion_id") Long suggestionId) {
         log.info("Remove suggestionId: {}", suggestionId);
         suggestionService.removeSuggestionBySuggestionId(suggestionId);
+    }
+
+    @RequestMapping("/fund/add")
+    public void addFundToSuggestion(@RequestBody AddFundToSuggestionRequestDto addFundToSuggestionRequestDto) {
+        suggestionService.addFundToSuggestion(addFundToSuggestionRequestDto);
     }
 }
 
