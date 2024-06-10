@@ -15,10 +15,12 @@ import com.hana.response.ErrorType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,6 +30,10 @@ public class PortfolioService {
     final PortfolioRepository portfolioRepository;
     final PortfolioItemRepository portfolioItemRepository;
     final UsersRepository usersRepository;
+
+    public Portfolio getPortfolioEntityByVipId(Long vipId) {
+        return portfolioRepository.findPortfolioByVipId(vipId);
+    }
 
     //    PortfolioItemResponseDto에 담아서 portfolio view에 보이기.
     public PortfolioDto getPortfolioByVipId(Long vipId) {
@@ -107,5 +113,20 @@ public class PortfolioService {
         }
 
         return PortfolioGraphDto.from(fundName, new_serial_date, new_serial_value);
+    }
+
+    @Transactional
+    public void makePortfolioItemInactive(Long portfolioId) {
+        List<PortfolioItem> portfolioItems = portfolioItemRepository.findAllByPortfolioId(portfolioId);
+        portfolioItems.stream().forEach(portfolioItem -> portfolioItem.makeInactive());
+    }
+
+    public Portfolio findByPortfolioByVipId(Long vipId) {
+        return portfolioRepository.findPortfolioByVipId(vipId);
+    }
+
+    @Transactional
+    public void savePortfolioItems(List<PortfolioItem> portfolioItems) {
+        portfolioItemRepository.saveAll(portfolioItems);
     }
 }

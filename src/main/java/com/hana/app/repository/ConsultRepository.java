@@ -18,4 +18,6 @@ public interface ConsultRepository extends JpaRepository<Consult, Long> {
 
     @Query("SELECT distinct(c.vip.id) FROM Consult c WHERE c.pb.id = :pbId")
     List<Long> findByPbId(Long pbId);
+
+    Consult findByVipIdAndPbIdAndStatus(Long vipId, Long pbId, Enum status);
 }

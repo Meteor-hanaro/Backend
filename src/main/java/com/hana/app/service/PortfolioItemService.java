@@ -9,7 +9,6 @@ import com.hana.app.repository.fund.FundSecurityRepository;
 import com.hana.app.repository.portfolio.PortfolioItemRepository;
 import com.hana.app.repository.security.SecurityPriceRepository;
 import com.hana.dto.response.CodeQuantityDto;
-import com.hana.dto.response.PortfolioItemResponseDto;
 import com.hana.dto.response.PurchaseCompositionDto;
 import com.hana.exception.MeteorException;
 import lombok.RequiredArgsConstructor;
@@ -94,8 +93,8 @@ public class PortfolioItemService {
         return 0L;
     }
 
-    public PortfolioItemResponseDto getPortfolioItemResponseDto(PortfolioItem portfolioItem) {
-        return PortfolioItemResponseDto.from(portfolioItem.getFund().getName(), portfolioItem.getStartAmount(), portfolioItem.getCreatedAt(), getCurrentValue(portfolioItem.getId()));
+    public List<PortfolioItem> getPortfolioItemEntityByPortfolioId(Long portfolioId) {
+        return portfolioItemRepository.findAllByPortfolioId(portfolioId);
     }
 
 }

@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -44,4 +45,12 @@ public class Contract extends BaseEntity{
 	@JoinColumn(name = "fund_id", nullable = false)
 	private Fund fund;
 
+	@Builder
+	public Contract(String signedContract, Pb pb, VIP vip, Fund fund) {
+		this.signedContract = signedContract;
+		this.pb = pb;
+		this.vip = vip;
+		this.fund = fund;
+		this.contractDate = LocalDateTime.now();
+	}
 }

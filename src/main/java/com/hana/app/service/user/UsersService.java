@@ -1,8 +1,6 @@
 package com.hana.app.service.user;
 
-import com.hana.app.data.entity.Consult;
-import com.hana.app.data.entity.IntegratedPb;
-import com.hana.app.data.entity.IntegratedVip;
+import com.hana.app.data.entity.*;
 import com.hana.app.repository.ConsultRepository;
 import com.hana.app.repository.IntegratedPbRepository;
 import com.hana.app.repository.IntegratedVipRepository;
@@ -43,9 +41,14 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final ConsultRepository consultRepository;
 
-    public UsersDto.TokenInfo login(String email, String password) {
+    public UsersDto.TokenInfo login(boolean isVip, String email, String password) {
+        Users user = usersRepository.findByEmail(email);
 
-        if (usersRepository.findByEmail(email) == null) {
+        if (user == null) {
+            throw new NotFoundException(ErrorType.NOT_FOUND);
+        }
+
+        if(user.is_vip() != isVip){
             throw new NotFoundException(ErrorType.NOT_FOUND);
         }
 
@@ -215,14 +218,20 @@ public class UsersService {
     }
 
     public VipDto.VipInfo getVipInfo(IntegratedVip vip) {
+        Long vipId = vip.getVipId();
+        boolean hasConsult = true;
+        if(consultRepository.findByVipIdAndPbIdAndStatus(vipId, vip.getPbId(), BaseEntity.BaseState.ACTIVE) == null){
+            hasConsult = false;
+        };
 
         return VipDto.VipInfo.builder()
-                .vipId(vip.getVipId())
+                .vipId(vipId)
                 .password(vip.getPassword())
                 .isvip(vip.getIsvip())
                 .name(vip.getName())
                 .riskType(vip.getRiskType())
                 .riskTestDate(localDateTime2String(vip.getTestedAt()))
+                .hasConsult(hasConsult)
                 .build();
     }
 

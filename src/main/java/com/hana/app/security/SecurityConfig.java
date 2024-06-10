@@ -1,5 +1,6 @@
 package com.hana.app.security;
 
+import com.hana.app.security.jwt.JwtAuthenticationEntryPoint;
 import com.hana.app.security.jwt.JwtAuthenticationFilter;
 import com.hana.app.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,12 @@ public class SecurityConfig  {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate redisTemplate;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    private static final String[] AUTH_BLACK_LIST = {
+            "/api/pb/**", "/api/vip/**"
+    };
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -44,25 +51,21 @@ public class SecurityConfig  {
         http.formLogin((form) -> form.disable());
         http.httpBasic(AbstractHttpConfigurer::disable);
 
-
         //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
-        http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider,redisTemplate), UsernamePasswordAuthenticationFilter.class);
+        http
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
 
-        // 권한 규칙 작성
-        http.authorizeHttpRequests(authorize -> authorize
-                /*
-                        .requestMatchers("/api/pb/login").permitAll()
-                        .requestMatchers("/api/vip/login").permitAll()
-                        .requestMatchers("/api/pb/**").authenticated()
-                        .requestMatchers("/api/vip/**").authenticated()
-
-                 */
-                        //@PreAuthrization을 사용할 것이기 때문에 모든 경로에 대한 인증처리는 Pass
-                        .anyRequest().permitAll()
+        //error 처리
+        http.exceptionHandling((exceptionHandling) -> exceptionHandling
+            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
         );
+
+        //권한 규칙 작성
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/api/pb/login", "/api/vip/login").permitAll() // 로그인 경로에 대한 예외 설정
+                .requestMatchers(AUTH_BLACK_LIST).authenticated() // AUTH_BLACK_LIST에 정의된 경로들에 대해 인증이 필요함
+                .anyRequest().permitAll()); // 그 외의 모든 요청은 인증 없이 허용함
 
         return http.build();
     }
-
-
 }

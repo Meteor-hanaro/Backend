@@ -23,7 +23,7 @@ public class PbController {
     @RequestMapping("/login")
     @ResponseBody
     public UsersDto.TokenInfo login(String email, String password) {
-        return userService.login(email, password);
+        return userService.login(false, email, password);
     }
 
     @RequestMapping("/logout")

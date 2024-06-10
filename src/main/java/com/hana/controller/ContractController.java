@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hana.app.service.fund.FundContractService;
+import com.hana.app.service.ContractService;
+import com.hana.dto.request.FinalContractRequestDto;
 import com.hana.dto.response.FundContractsResponseDto;
 import com.hana.external.aws.S3Service;
 
@@ -25,6 +27,7 @@ public class ContractController {
 
 	private final S3Service s3Service;
 	private final FundContractService fundContractService;
+	private final ContractService contractService;
 
 	@PostMapping("/upload")
 	public String uploadPdf(@RequestParam("file") MultipartFile file) {
@@ -37,11 +40,9 @@ public class ContractController {
 		return fundContractService.getFundJoinContractsByFundIds(fundIds);
 	}
 
-// FINAL 계약서 가져오는 코드
-	@PostMapping("/finalcontract")
-	public List<FundContractsResponseDto> getFinalFundContractsByIds(@RequestBody Map<String, List<Long>> request) {
-		List<Long> fundIds = request.get("fundIds");
-		return fundContractService.getFundFinalContractsByFundIds(fundIds);
+	@PostMapping()
+	public void completeContracts(@RequestBody FinalContractRequestDto finalContractRequestDto) {
+		contractService.completeContracts(finalContractRequestDto);
 	}
 
 }
