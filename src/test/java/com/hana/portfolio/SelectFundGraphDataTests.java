@@ -8,16 +8,25 @@ import com.hana.controller.PortfolioController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Slf4j
-@RequiredArgsConstructor
 public class SelectFundGraphDataTests {
-    final PortfolioService portfolioService;
-    final PortfolioItemService portfolioItemService;
-    final SecurityPriceService securityPriceService;
-    private final FundSecurityService fundSecurityService;
+    @Autowired
+    PortfolioService portfolioService;
+
+    @Autowired
+    PortfolioItemService portfolioItemService;
+
+    @Autowired
+    SecurityPriceService securityPriceService;
+
+    @Autowired
+    FundSecurityService fundSecurityService;
+
+    @Autowired
     PortfolioController portfolioController;
 
     @Test

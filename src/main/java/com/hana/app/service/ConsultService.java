@@ -6,11 +6,14 @@ import com.hana.app.repository.ConsultRepository;
 import com.hana.app.repository.PbRepository;
 import com.hana.app.repository.VipRepository;
 import com.hana.dto.request.ConsultRegisterDto;
+import com.hana.dto.response.ConsultAdminDto;
+import com.hana.dto.response.ConsultAdminItemDto;
 import com.hana.dto.response.ConsultSearchDto;
 import com.hana.dto.response.ConsultWebRTCRoomDto;
 import com.hana.exception.MeteorException;
 import com.hana.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.NotFound;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,6 +39,10 @@ public class ConsultService {
 
     public ConsultSearchDto searchConsultIsExist(Long pbId) {
         return new ConsultSearchDto(searchPbVipConsultIsExist(pbId));
+    }
+
+    public ConsultAdminDto extractAdminConsultData(){
+        return new ConsultAdminDto(extractAllConsultData());
     }
 
     private Consult makeConsult(ConsultRegisterDto consultRegisterDto) {
@@ -84,6 +91,22 @@ public class ConsultService {
             }
         } catch (MeteorException e) {
             throw new RuntimeException();
+        }
+
+        return list;
+    }
+
+    private List<ConsultAdminItemDto> extractAllConsultData() {
+        List<ConsultAdminItemDto> list = new ArrayList<>();
+
+        try {
+            for (Consult consult : consultRepository.findAll()) {
+                if (consult.getStatus() == BaseEntity.BaseState.ACTIVE) {
+                    list.add(ConsultAdminItemDto.from(consult));
+                }
+            }
+        } catch (MeteorException e) {
+            throw new NotFoundException(e.getErrorType());
         }
 
         return list;
