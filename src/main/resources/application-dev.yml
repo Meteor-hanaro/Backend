@@ -4,6 +4,10 @@ server:
     encoding:
       charset: UTF-8
       force: true
+  tomcat:
+    remoteip:
+      remote-ip-header: x-forwarded-for
+      protocol-header: x-forwarded-proto
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
