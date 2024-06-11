@@ -39,6 +39,7 @@ public class ContractController {
 		List<Long> fundIds = request.get("fundIds");
 		return fundContractService.getFundJoinContractsByFundIds(fundIds);
 	}
+	//최종계약서 리스트 가져오기
 	@PostMapping("/finalcontract")
 	public List<FundContractsResponseDto> getFinalFundContractsByIds(@RequestBody Map<String, List<Long>> request) {
 		List<Long> fundIds = request.get("fundIds");
