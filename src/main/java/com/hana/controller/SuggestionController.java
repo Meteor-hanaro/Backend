@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.Random;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/suggestion")
 @RequiredArgsConstructor
-@Slf4j
 public class SuggestionController {
 
     final SuggestionService suggestionService;

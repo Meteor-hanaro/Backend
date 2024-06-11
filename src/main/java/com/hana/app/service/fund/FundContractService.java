@@ -37,4 +37,19 @@ public class FundContractService {
 			return FundContractsResponseDto.from(fund, fundContractDtos);
 		}).collect(Collectors.toList());
 	}
+
+	public List<FundContractsResponseDto> getFundFinalContractsByFundIds(List<Long> fundIds) {
+		List<Fund> funds = fundRepository.findByIdIn(fundIds);
+		List<FundContract> fundContracts = fundContractRepository.findByFundIdIn(fundIds);
+
+		return funds.stream().map(fund -> {
+			List<FundContractDto> fundContractDtos = fundContracts.stream()
+					.filter(contract -> contract.getFund().getId().equals(fund.getId()))
+					.filter(fundContract -> fundContract.getContractType().equals(FundContract.ContractType.FINAL))
+					.map(FundContractDto::from)
+					.collect(Collectors.toList());
+
+			return FundContractsResponseDto.from(fund, fundContractDtos);
+		}).collect(Collectors.toList());
+	}
 }
