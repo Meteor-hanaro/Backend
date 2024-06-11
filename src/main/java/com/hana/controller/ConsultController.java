@@ -2,16 +2,13 @@ package com.hana.controller;
 
 import com.hana.app.service.ConsultService;
 import com.hana.dto.request.ConsultRegisterDto;
-import com.hana.dto.response.ConsultAdminDto;
-import com.hana.dto.response.ConsultSearchDto;
-import com.hana.dto.response.ConsultWebRTCRoomDto;
+import com.hana.dto.response.ConsultResponseDto;
+import com.hana.dto.response.consult.*;
 import com.hana.exception.InternalServerException;
 import com.hana.exception.MeteorException;
 import com.hana.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/consult")
@@ -19,6 +16,16 @@ import java.util.List;
 public class ConsultController {
 
     final ConsultService consultService;
+
+    @PostMapping("/close")
+    public void closeConsult(Long consultId){
+        consultService.closeConsult(consultId);
+    }
+
+    @PostMapping("/write")
+    public void writeConsult(@RequestBody ConsultResponseDto consultResponseDto){
+        consultService.writeConsult(consultResponseDto);
+    }
 
     @PostMapping("/registerConsult")
     public void registerConsult(@RequestBody ConsultRegisterDto consultRegisterDto) {

@@ -1,7 +1,7 @@
 package com.hana.app.service;
 
 import com.hana.app.data.entity.Users;
-import com.hana.app.repository.UsersRepository;
+import com.hana.app.repository.user.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

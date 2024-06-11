@@ -10,8 +10,8 @@ import com.hana.app.data.entity.fund.Fund;
 import com.hana.app.data.entity.fund.FundContract;
 import com.hana.app.repository.fund.FundContractRepository;
 import com.hana.app.repository.fund.FundRepository;
-import com.hana.dto.response.FundContractDto;
-import com.hana.dto.response.FundContractsResponseDto;
+import com.hana.dto.response.fund.FundContractDto;
+import com.hana.dto.response.fund.FundContractsResponseDto;
 
 import lombok.RequiredArgsConstructor;
 

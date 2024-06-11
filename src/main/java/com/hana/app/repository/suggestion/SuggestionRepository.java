@@ -20,4 +20,6 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
     @Transactional
     @Query("UPDATE Suggestion s SET s.name = :suggestion_name WHERE s.id = :suggestionId")
     int updateSuggestionNameById(@Param("suggestionItemId") Long suggestionId, @Param("suggestionName") String suggestion_name);
+
+    Suggestion findSuggestionById(Long suggestionId);
 }
