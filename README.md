@@ -1,4 +1,4 @@
-# Frontend
+# Backend
 
 😎 Gold Rounge의 Backend Repository
 
