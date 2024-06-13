@@ -1,2 +1,33 @@
-# Backend
-Meteor-hanaro, Backend Repository
+# Frontend
+
+😎 Gold Rounge의 Backend Repository
+
+## 🚀 개발 환경
+
+## 🚃 개발 기술
+
+## 🌱 프로젝트 구조
+
+## 🌼 역할 분담
+### 🚲 곽준영
+- UI
+- 기능
+### 🎡 김가원
+- UI
+- 기능
+### ⚓ 김주혜
+- UI
+- 기능
+### 🚔 김하영
+- UI
+- 기능
+### ✈️ 신지연
+- UI
+- 기능
+### ⛪ 이상민
+- UI
+- 기능
+
+## 🎃 페이지 별 기능
+
+## 🐸 개선 및 추후 발전 계획
